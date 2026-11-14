@@ -13,6 +13,7 @@ import countries from "../data/countries.json";
 import { useApp } from "../contexts/AppContext";
 import { assetPath } from "../lib/assetPath";
 import { countryName, uiText } from "../lib/i18n";
+import CareerRoadmap from "../components/CareerRoadmap";
 import {
   FEATURE_VISIBILITY,
   isCountryVisible,
@@ -169,17 +170,13 @@ export default function Home() {
         <div className="home-hero-content relative mx-auto flex max-w-[1200px] flex-col items-start justify-between gap-6 lg:flex-row lg:items-center lg:gap-8">
           <div className="home-hero-copy">
             <p className="home-hero-welcome">
-              {isArabic ? (
-                firstName ? (
-                  `مرحباً د. ${firstName}`
-                ) : (
-                  "مرحباً بك"
-                )
-              ) : firstName ? (
-                `Welcome, Dr. ${firstName}`
-              ) : (
-                "Welcome, Doctor"
-              )}
+              {isArabic
+                ? firstName
+                  ? `مرحباً د. ${firstName}`
+                  : "مرحباً بك"
+                : firstName
+                  ? `Welcome, Dr. ${firstName}`
+                  : "Welcome, Doctor"}
             </p>
             <h1 className="home-hero-heading">
               {isArabic ? (
@@ -187,7 +184,9 @@ export default function Home() {
               ) : (
                 <>
                   <span>medvade is Your mentor for</span>
-                  <span className="home-hero-highlight">Medical Residency Abroad.</span>
+                  <span className="home-hero-highlight">
+                    Medical Residency Abroad.
+                  </span>
                 </>
               )}
             </h1>
@@ -199,6 +198,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <CareerRoadmap />
 
       {/* Quick links */}
       <div className="flex flex-wrap items-center justify-between gap-2">

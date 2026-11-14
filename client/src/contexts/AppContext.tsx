@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useAuth } from "./AuthContext";
 import { supabase } from "../lib/supabase";
 
@@ -16,19 +23,75 @@ export interface Profile {
   graduationStatus: string;
   targetCountries: string[];
   mainGoal: string;
+  targetSpecialty: string;
+  languageProficiency: string;
+  completedLicensingExams: string;
+  professionalQualifications: string;
+  careerTimeline: string;
+  roadmapRequirementStatuses: Record<
+    string,
+    "completed" | "in-progress" | "not-started" | "not-applicable"
+  >;
   interests: string[];
   priorities: string[];
   workStyle: string;
 }
 
-export const GRADUATION_STATUSES = ["Medical student", "Intern / foundation year", "Final year", "Graduate, not yet licensed", "Licensed doctor"];
-export const INTERESTS = ["Acute care", "Longitudinal care", "Procedures", "Mental health", "Child health", "Diagnostics", "Research"];
-export const PRIORITIES = ["Training length", "Work-life balance", "Earning potential", "Visa clarity", "Breadth of practice", "Location flexibility"];
-export const WORK_STYLES = ["Analytical and reflective", "Hands-on and decisive", "People-centred and varied", "Fast-paced and collaborative", "Visual and technology-led"];
+export const GRADUATION_STATUSES = [
+  "Medical student",
+  "Intern / foundation year",
+  "Final year",
+  "Graduate, not yet licensed",
+  "Licensed doctor",
+];
+export const INTERESTS = [
+  "Acute care",
+  "Longitudinal care",
+  "Procedures",
+  "Mental health",
+  "Child health",
+  "Diagnostics",
+  "Research",
+];
+export const PRIORITIES = [
+  "Training length",
+  "Work-life balance",
+  "Earning potential",
+  "Visa clarity",
+  "Breadth of practice",
+  "Location flexibility",
+];
+export const WORK_STYLES = [
+  "Analytical and reflective",
+  "Hands-on and decisive",
+  "People-centred and varied",
+  "Fast-paced and collaborative",
+  "Visual and technology-led",
+];
 
 export const DEFAULT_PROFILE: Profile = {
-  name: "", firstName: "", lastName: "", email: "", medicalSchool: "", currentCountry: "", nationality: "", currentStudyYear: "", residenceCost: "", graduationYear: "", graduationStatus: "",
-  targetCountries: [], mainGoal: "", interests: [], priorities: [], workStyle: "",
+  name: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  medicalSchool: "",
+  currentCountry: "",
+  nationality: "",
+  currentStudyYear: "",
+  residenceCost: "",
+  graduationYear: "",
+  graduationStatus: "",
+  targetCountries: [],
+  mainGoal: "",
+  targetSpecialty: "",
+  languageProficiency: "",
+  completedLicensingExams: "",
+  professionalQualifications: "",
+  careerTimeline: "",
+  roadmapRequirementStatuses: {},
+  interests: [],
+  priorities: [],
+  workStyle: "",
 };
 
 export type Language = "en" | "ar";
@@ -66,13 +129,21 @@ function loadJson<T>(key: string, fallback: T): T {
 
 function loadLanguage(): Language {
   const storedLanguage = localStorage.getItem("medvade-language");
-  const googleLanguage = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/(ar|en)/)?.[1];
-  return storedLanguage === "ar" || (storedLanguage !== "ar" && googleLanguage === "ar")
+  const googleLanguage = document.cookie.match(
+    /(?:^|;\s*)googtrans=\/en\/(ar|en)/
+  )?.[1];
+  return storedLanguage === "ar" ||
+    (storedLanguage !== "ar" && googleLanguage === "ar")
     ? "ar"
     : "en";
 }
 
-function localSnapshot(profile: Profile, savedSpecialtyIds: string[], savedCountryIds: string[], compareIds: string[]) {
+function localSnapshot(
+  profile: Profile,
+  savedSpecialtyIds: string[],
+  savedCountryIds: string[],
+  compareIds: string[]
+) {
   return { profile, savedSpecialtyIds, savedCountryIds, compareIds };
 }
 
@@ -81,6 +152,11 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
   const legacyParts = legacyName.split(/\s+/).filter(Boolean);
   const firstName = stored.firstName?.trim() || legacyParts[0] || "";
   const lastName = stored.lastName?.trim() || legacyParts.slice(1).join(" ");
+  const roadmapRequirementStatuses =
+    stored.roadmapRequirementStatuses &&
+    typeof stored.roadmapRequirementStatuses === "object"
+      ? stored.roadmapRequirementStatuses
+      : {};
   return {
     ...DEFAULT_PROFILE,
     ...stored,
@@ -88,21 +164,33 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     lastName,
     name: [firstName, lastName].filter(Boolean).join(" "),
     email: stored.email || email,
+    roadmapRequirementStatuses,
   };
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const [language, setLanguage] = useState<Language>(loadLanguage);
-  const [profile, setProfile] = useState<Profile>(() => normalizeProfile(loadJson<Partial<Profile>>("medvade-profile", {})));
-  const [savedSpecialtyIds, setSavedSpecialtyIds] = useState<string[]>(() => loadJson("medvade-saved-specialties", []));
-  const [savedCountryIds, setSavedCountryIds] = useState<string[]>(() => loadJson("medvade-saved-countries", []));
-  const [compareIds, setCompareIds] = useState<string[]>(() => loadJson("medvade-compare", []));
+  const [profile, setProfile] = useState<Profile>(() =>
+    normalizeProfile(loadJson<Partial<Profile>>("medvade-profile", {}))
+  );
+  const [savedSpecialtyIds, setSavedSpecialtyIds] = useState<string[]>(() =>
+    loadJson("medvade-saved-specialties", [])
+  );
+  const [savedCountryIds, setSavedCountryIds] = useState<string[]>(() =>
+    loadJson("medvade-saved-countries", [])
+  );
+  const [compareIds, setCompareIds] = useState<string[]>(() =>
+    loadJson("medvade-compare", [])
+  );
   const [syncReady, setSyncReady] = useState(false);
   const activeUserId = useRef<string | null>(null);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const persistToCloud = async (snapshot: ReturnType<typeof localSnapshot>, userId: string) => {
+  const persistToCloud = async (
+    snapshot: ReturnType<typeof localSnapshot>,
+    userId: string
+  ) => {
     if (!supabase) return;
     await supabase.from("medweg_user_data").upsert({
       user_id: userId,
@@ -125,18 +213,41 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     activeUserId.current = user.id;
     (async () => {
-      const { data, error } = await supabase.from("medweg_user_data").select("profile, saved_specialty_ids, saved_country_ids, compare_ids").eq("user_id", user.id).maybeSingle();
+      const { data, error } = await supabase
+        .from("medweg_user_data")
+        .select("profile, saved_specialty_ids, saved_country_ids, compare_ids")
+        .eq("user_id", user.id)
+        .maybeSingle();
       if (cancelled) return;
 
       if (!error && data) {
-        setProfile(normalizeProfile(data.profile as Partial<Profile>, user.email || ""));
-        setSavedSpecialtyIds(Array.isArray(data.saved_specialty_ids) ? data.saved_specialty_ids : []);
-        setSavedCountryIds(Array.isArray(data.saved_country_ids) ? data.saved_country_ids : []);
+        setProfile(
+          normalizeProfile(data.profile as Partial<Profile>, user.email || "")
+        );
+        setSavedSpecialtyIds(
+          Array.isArray(data.saved_specialty_ids)
+            ? data.saved_specialty_ids
+            : []
+        );
+        setSavedCountryIds(
+          Array.isArray(data.saved_country_ids) ? data.saved_country_ids : []
+        );
         setCompareIds(Array.isArray(data.compare_ids) ? data.compare_ids : []);
       } else {
-        const nextProfile = normalizeProfile({ ...profile, email: profile.email || user.email || "" });
+        const nextProfile = normalizeProfile({
+          ...profile,
+          email: profile.email || user.email || "",
+        });
         setProfile(nextProfile);
-        await persistToCloud(localSnapshot(nextProfile, savedSpecialtyIds, savedCountryIds, compareIds), user.id);
+        await persistToCloud(
+          localSnapshot(
+            nextProfile,
+            savedSpecialtyIds,
+            savedCountryIds,
+            compareIds
+          ),
+          user.id
+        );
       }
       setSyncReady(true);
     })();
@@ -152,10 +263,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("medvade-profile", JSON.stringify(profile));
   }, [profile]);
   useEffect(() => {
-    localStorage.setItem("medvade-saved-specialties", JSON.stringify(savedSpecialtyIds));
+    localStorage.setItem(
+      "medvade-saved-specialties",
+      JSON.stringify(savedSpecialtyIds)
+    );
   }, [savedSpecialtyIds]);
   useEffect(() => {
-    localStorage.setItem("medvade-saved-countries", JSON.stringify(savedCountryIds));
+    localStorage.setItem(
+      "medvade-saved-countries",
+      JSON.stringify(savedCountryIds)
+    );
   }, [savedCountryIds]);
   useEffect(() => {
     localStorage.setItem("medvade-compare", JSON.stringify(compareIds));
@@ -169,7 +286,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!syncReady || !activeUserId.current) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    const snapshot = localSnapshot(profile, savedSpecialtyIds, savedCountryIds, compareIds);
+    const snapshot = localSnapshot(
+      profile,
+      savedSpecialtyIds,
+      savedCountryIds,
+      compareIds
+    );
     saveTimer.current = setTimeout(() => {
       void persistToCloud(snapshot, activeUserId.current!);
     }, 450);
@@ -178,14 +300,40 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     };
   }, [profile, savedSpecialtyIds, savedCountryIds, compareIds, syncReady]);
 
-  const toggleSpecialty = (id: string) => setSavedSpecialtyIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
-  const toggleCountry = (id: string) => setSavedCountryIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+  const toggleSpecialty = (id: string) =>
+    setSavedSpecialtyIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  const toggleCountry = (id: string) =>
+    setSavedCountryIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
   const saveProfile = () => {
     localStorage.setItem("medvade-profile", JSON.stringify(profile));
-    if (activeUserId.current) void persistToCloud(localSnapshot(profile, savedSpecialtyIds, savedCountryIds, compareIds), activeUserId.current);
+    if (activeUserId.current)
+      void persistToCloud(
+        localSnapshot(profile, savedSpecialtyIds, savedCountryIds, compareIds),
+        activeUserId.current
+      );
   };
 
-  const value = useMemo(() => ({ language, setLanguage, isArabic: language === "ar", profile, setProfile, saveProfile, savedSpecialtyIds, toggleSpecialty, savedCountryIds, toggleCountry, compareIds, setCompareIds }), [language, profile, savedSpecialtyIds, savedCountryIds, compareIds]);
+  const value = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      isArabic: language === "ar",
+      profile,
+      setProfile,
+      saveProfile,
+      savedSpecialtyIds,
+      toggleSpecialty,
+      savedCountryIds,
+      toggleCountry,
+      compareIds,
+      setCompareIds,
+    }),
+    [language, profile, savedSpecialtyIds, savedCountryIds, compareIds]
+  );
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 

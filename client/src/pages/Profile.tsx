@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import countrySuggestions from "../data/countrySuggestions.json";
+import specialties from "../data/specialties.json";
 import { isCountryNameVisible } from "../config/featureVisibility";
 import {
   GRADUATION_STATUSES,
@@ -65,9 +66,9 @@ export default function Profile() {
           Discover your pathway
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-          Tell us a little about where you are today and what you are looking
-          for. We will use this foundation for future country and specialty
-          recommendations.
+          Tell us where you are today and what you are working toward. These
+          details power your Personal Career Roadmap and stay editable as your
+          plans change.
         </p>
       </div>
 
@@ -245,6 +246,112 @@ export default function Profile() {
                 className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               />
             </div>
+          </label>
+          <label className="block">
+            <span className="text-xs font-bold">Desired medical specialty</span>
+            <div className="relative mt-2">
+              <select
+                value={profile.targetSpecialty}
+                onChange={e => update({ targetSpecialty: e.target.value })}
+                className="h-10 w-full appearance-none rounded-lg border border-border bg-background/60 px-3 pr-9 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+                data-testid="select-target-specialty"
+              >
+                <option value="">Select a specialty</option>
+                {specialties.map(specialty => (
+                  <option key={specialty.id} value={specialty.name}>
+                    {specialty.name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={14}
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          </label>
+          <label className="block">
+            <span className="text-xs font-bold">Language proficiency</span>
+            <div className="relative mt-2">
+              <select
+                value={profile.languageProficiency}
+                onChange={e => update({ languageProficiency: e.target.value })}
+                className="h-10 w-full appearance-none rounded-lg border border-border bg-background/60 px-3 pr-9 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+                data-testid="select-language-proficiency"
+              >
+                <option value="">Select your level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced / fluent">Advanced / fluent</option>
+                <option value="Native or professionally educated">
+                  Native or professionally educated
+                </option>
+              </select>
+              <ChevronDown
+                size={14}
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          </label>
+          <label className="block">
+            <span className="text-xs font-bold">Career timeline</span>
+            <div className="relative mt-2">
+              <select
+                value={profile.careerTimeline}
+                onChange={e => update({ careerTimeline: e.target.value })}
+                className="h-10 w-full appearance-none rounded-lg border border-border bg-background/60 px-3 pr-9 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+                data-testid="select-career-timeline"
+              >
+                <option value="">Choose a planning horizon</option>
+                <option value="Within 12 months">Within 12 months</option>
+                <option value="1–3 years">1–3 years</option>
+                <option value="3–5 years">3–5 years</option>
+                <option value="5+ years">5+ years</option>
+              </select>
+              <ChevronDown
+                size={14}
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          </label>
+        </div>
+      </section>
+
+      {/* Roadmap evidence */}
+      <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <h2 className="text-base font-extrabold">Roadmap evidence</h2>
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+          Add what you have already completed. The roadmap uses these signals to
+          calculate a real starting point; it will not assume an exam or
+          qualification you have not recorded.
+        </p>
+        <div className="mt-5 grid gap-5 md:grid-cols-2">
+          <label className="block">
+            <span className="text-xs font-bold">Completed licensing exams</span>
+            <textarea
+              value={profile.completedLicensingExams}
+              onChange={e =>
+                update({ completedLicensingExams: e.target.value })
+              }
+              placeholder="e.g. MCCQE Part I, PLAB 1, USMLE Step 1"
+              rows={3}
+              className="mt-2 w-full rounded-lg border border-border bg-background/60 px-3 py-2 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+              data-testid="textarea-completed-exams"
+            />
+          </label>
+          <label className="block">
+            <span className="text-xs font-bold">
+              Professional qualifications
+            </span>
+            <textarea
+              value={profile.professionalQualifications}
+              onChange={e =>
+                update({ professionalQualifications: e.target.value })
+              }
+              placeholder="Registration, certificates, postgraduate qualifications"
+              rows={3}
+              className="mt-2 w-full rounded-lg border border-border bg-background/60 px-3 py-2 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+              data-testid="textarea-professional-qualifications"
+            />
           </label>
         </div>
       </section>
