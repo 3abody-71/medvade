@@ -23,3 +23,9 @@ Use MedVade's existing restrained teal/blue palette, rounded borders, compact ty
 - `client/src/pages/Home.tsx`: exact hero → roadmap → country section placement.
 - `client/src/index.css`: responsive roadmap path and status styling.
 - `supabase/community.sql`: existing community migration remains unchanged because roadmap state uses the existing profile JSON persistence.
+
+## Residency readiness interview extension
+
+The roadmap now includes a country-aware questionnaire backed by `client/src/data/residencyReadiness.ts`. Six countries have researched factor catalogs based on official licensing, regulator, government, matching-service, and programme sources: the United States, United Kingdom, Australia, Canada, Germany, and Ireland. The remaining destination records use a generic evidence interview that links to each country record's authority page and does not claim detailed legal requirements.
+
+The questionnaire stores cycle, answers, and statuses inside the existing authenticated/local profile snapshot. It separates official eligibility gates from competitive/context factors. The displayed 0–100 Residency Readiness Index is a transparent preparation measure: verified checks count fully and in-progress checks count halfway. It is explicitly not a match probability, official weighting, percentile, interview prediction, or guarantee because the reviewed authorities do not publish a validated individual model. Failed official gates remain visible as blockers and cannot be offset by research or electives.

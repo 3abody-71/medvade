@@ -28,6 +28,12 @@ export interface Profile {
   completedLicensingExams: string;
   professionalQualifications: string;
   careerTimeline: string;
+  residencyCycle: string;
+  residencyEvidence: Record<string, string>;
+  residencyEvidenceStatuses: Record<
+    string,
+    "verified" | "in-progress" | "not-met" | "unknown" | "not-applicable"
+  >;
   roadmapRequirementStatuses: Record<
     string,
     "completed" | "in-progress" | "not-started" | "not-applicable"
@@ -88,6 +94,9 @@ export const DEFAULT_PROFILE: Profile = {
   completedLicensingExams: "",
   professionalQualifications: "",
   careerTimeline: "",
+  residencyCycle: "",
+  residencyEvidence: {},
+  residencyEvidenceStatuses: {},
   roadmapRequirementStatuses: {},
   interests: [],
   priorities: [],
@@ -157,6 +166,15 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     typeof stored.roadmapRequirementStatuses === "object"
       ? stored.roadmapRequirementStatuses
       : {};
+  const residencyEvidence =
+    stored.residencyEvidence && typeof stored.residencyEvidence === "object"
+      ? stored.residencyEvidence
+      : {};
+  const residencyEvidenceStatuses =
+    stored.residencyEvidenceStatuses &&
+    typeof stored.residencyEvidenceStatuses === "object"
+      ? stored.residencyEvidenceStatuses
+      : {};
   return {
     ...DEFAULT_PROFILE,
     ...stored,
@@ -164,6 +182,8 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     lastName,
     name: [firstName, lastName].filter(Boolean).join(" "),
     email: stored.email || email,
+    residencyEvidence,
+    residencyEvidenceStatuses,
     roadmapRequirementStatuses,
   };
 }

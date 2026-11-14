@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { useAuth } from "../contexts/AuthContext";
+import ResidencyReadiness from "./ResidencyReadiness";
 import {
   buildRoadmap,
   getRoadmapProfileGaps,
@@ -371,6 +372,7 @@ export default function CareerRoadmap() {
           )}
         </div>
       </div>
+      <ResidencyReadiness />
       <p className="mt-5 text-[11px] leading-5 text-muted-foreground">
         Roadmap guidance is an organized planning aid, not a registration
         decision. Requirements, exemptions, fees, and deadlines depend on your
