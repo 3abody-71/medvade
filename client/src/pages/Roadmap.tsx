@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, LockKeyhole, RotateCcw, Save, ShieldAlert, Target } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { answerKey, calculateRoadmap, questionScore, ROADMAP_COUNTRIES, type RoadmapCountry, type RoadmapQuestion } from "../data/roadmapReadiness";
 
@@ -50,6 +50,7 @@ function QuestionCard({ country, question, value, onChange }: { country: Roadmap
 
 export default function Roadmap() {
   const { profile, setProfile } = useApp();
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [countryId, setCountryId] = useState(profile.targetCountries[0] && ROADMAP_COUNTRIES.some(country => country.id === profile.targetCountries[0]) ? profile.targetCountries[0] : "");
   const [resultShown, setResultShown] = useState(false);
@@ -98,8 +99,7 @@ export default function Roadmap() {
         },
       },
     }));
-    setSavedNotice(true);
-    window.setTimeout(() => setSavedNotice(false), 3000);
+    navigate("/");
   };
 
   return (

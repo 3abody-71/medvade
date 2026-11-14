@@ -26,11 +26,12 @@ export default function CareerRoadmap() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5"><ShieldCheck size={13} /> {isArabic ? "نسبة جاهزية وليست ضمان قبول" : "Preparation score, not a guarantee"}</span>
           </div>
           {latestSaved && latestCountry && (
-            <div className="mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-3">
-              <div className="grid h-12 w-12 place-items-center rounded-full border-4 border-primary/20 border-t-primary text-sm font-black text-primary">{latestSaved[1].percentage}%</div>
+            <div className="mt-5 flex flex-wrap items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-4">
+              <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full border-[7px] border-primary/15 border-t-primary text-xl font-black text-primary" aria-label={`${latestSaved[1].percentage}% pathway progress`}>{latestSaved[1].percentage}%</div>
               <div>
-                <p className="text-xs font-extrabold">{isArabic ? `آخر نتيجة محفوظة: ${latestCountry.name}` : `Saved result: ${latestCountry.name}`}</p>
-                <p className="mt-1 text-[11px] text-muted-foreground">{latestSaved[1].gatesMet}/{latestSaved[1].gatesTotal} {isArabic ? "بوابات أهلية مكتملة" : "eligibility gates met"}{latestSaved[1].specialty ? ` · ${latestSaved[1].specialty}` : ""}</p>
+                <p className="text-xs font-extrabold">{isArabic ? `تقدمك في مسار ${latestCountry.name}` : `${latestCountry.name} pathway progress`}</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">{latestSaved[1].gatesMet}/{latestSaved[1].gatesTotal} {isArabic ? "بوابات أهلية مكتملة" : "eligibility gates complete"}{latestSaved[1].specialty ? ` · ${latestSaved[1].specialty}` : ""}</p>
+                <p className="mt-2 text-[10px] font-bold text-primary">{isArabic ? "آخر نتيجة محفوظة — افتح Roadmap لتحديثها" : "Saved result — open Roadmap to update it"}</p>
               </div>
             </div>
           )}
