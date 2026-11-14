@@ -32,6 +32,21 @@ const statusIcon = {
   "not-applicable": CircleAlert,
 };
 
+function RoadmapHowItWorks() {
+  return (
+    <div className="mt-5 rounded-xl border border-primary/15 bg-primary/5 p-4">
+      <p className="text-xs font-extrabold uppercase tracking-wider text-primary">
+        How this roadmap works
+      </p>
+      <div className="mt-3 grid gap-3 text-xs leading-5 text-muted-foreground sm:grid-cols-3">
+        <p><strong className="text-foreground">1. Personalise:</strong> choose your country, specialty, stage, language, and target cycle.</p>
+        <p><strong className="text-foreground">2. Check:</strong> open each milestone and record your documents, exams, experience, research, and programme evidence.</p>
+        <p><strong className="text-foreground">3. Act:</strong> update statuses to see your real progress and the next action. The index measures preparation, not a guaranteed match.</p>
+      </div>
+    </div>
+  );
+}
+
 export default function CareerRoadmap() {
   const { profile, setProfile } = useApp();
   const { user } = useAuth();
@@ -104,6 +119,7 @@ export default function CareerRoadmap() {
             </div>
           </div>
         </div>
+        <RoadmapHowItWorks />
       </section>
     );
   }
@@ -163,6 +179,8 @@ export default function CareerRoadmap() {
           </div>
         </div>
       </div>
+
+      <RoadmapHowItWorks />
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
         <div>
