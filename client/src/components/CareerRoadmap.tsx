@@ -1,9 +1,12 @@
 import { ArrowRight, MapPinned, ShieldCheck, Stethoscope } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
+import { ROADMAP_COUNTRIES } from "../data/roadmapReadiness";
 
 export default function CareerRoadmap() {
-  const { isArabic } = useApp();
+  const { isArabic, profile } = useApp();
+  const latestSaved = Object.entries(profile.roadmapResults).sort(([, first], [, second]) => second.savedAt.localeCompare(first.savedAt))[0];
+  const latestCountry = latestSaved ? ROADMAP_COUNTRIES.find(country => country.id === latestSaved[0]) : undefined;
   return (
     <section className="career-roadmap-shell rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-7" aria-labelledby="roadmap-heading">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -22,6 +25,15 @@ export default function CareerRoadmap() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5"><Stethoscope size={13} /> {isArabic ? "أسئلة خاصة بكل دولة" : "Country-specific questions"}</span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5"><ShieldCheck size={13} /> {isArabic ? "نسبة جاهزية وليست ضمان قبول" : "Preparation score, not a guarantee"}</span>
           </div>
+          {latestSaved && latestCountry && (
+            <div className="mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-3">
+              <div className="grid h-12 w-12 place-items-center rounded-full border-4 border-primary/20 border-t-primary text-sm font-black text-primary">{latestSaved[1].percentage}%</div>
+              <div>
+                <p className="text-xs font-extrabold">{isArabic ? `آخر نتيجة محفوظة: ${latestCountry.name}` : `Saved result: ${latestCountry.name}`}</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">{latestSaved[1].gatesMet}/{latestSaved[1].gatesTotal} {isArabic ? "بوابات أهلية مكتملة" : "eligibility gates met"}{latestSaved[1].specialty ? ` · ${latestSaved[1].specialty}` : ""}</p>
+              </div>
+            </div>
+          )}
         </div>
         <Link to="/roadmap" className="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs font-extrabold">
           {isArabic ? "افتح Roadmap" : "Open Career Roadmap"} <ArrowRight size={15} />

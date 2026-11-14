@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, LockKeyhole, RotateCcw, ShieldAlert, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, LockKeyhole, RotateCcw, Save, ShieldAlert, Target } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { answerKey, calculateRoadmap, questionScore, ROADMAP_COUNTRIES, type RoadmapCountry, type RoadmapQuestion } from "../data/roadmapReadiness";
@@ -53,12 +53,14 @@ export default function Roadmap() {
   const [step, setStep] = useState(0);
   const [countryId, setCountryId] = useState(profile.targetCountries[0] && ROADMAP_COUNTRIES.some(country => country.id === profile.targetCountries[0]) ? profile.targetCountries[0] : "");
   const [resultShown, setResultShown] = useState(false);
+  const [savedNotice, setSavedNotice] = useState(false);
   const country = ROADMAP_COUNTRIES.find(item => item.id === countryId);
   const answers = useMemo(() => {
     if (!country) return {};
     return Object.fromEntries(country.questions.map(question => [question.key, profile.residencyEvidence[answerKey(country.id, question.key)] || ""]));
   }, [country, profile.residencyEvidence]);
   const result = country ? calculateRoadmap(country, answers) : null;
+  const savedResult = country ? profile.roadmapResults[country.id] : undefined;
 
   const updateAnswer = (question: RoadmapQuestion, value: string) => {
     if (!country) return;
@@ -78,6 +80,26 @@ export default function Roadmap() {
     });
     setResultShown(false);
     setStep(1);
+  };
+
+  const saveResult = () => {
+    if (!country || !result) return;
+    setProfile(current => ({
+      ...current,
+      roadmapResults: {
+        ...current.roadmapResults,
+        [country.id]: {
+          percentage: result.percentage,
+          gatesMet: result.gatesMet,
+          gatesTotal: result.gatesTotal,
+          specialty: current.targetSpecialty,
+          cycle: current.residencyCycle,
+          savedAt: new Date().toISOString(),
+        },
+      },
+    }));
+    setSavedNotice(true);
+    window.setTimeout(() => setSavedNotice(false), 3000);
   };
 
   return (
@@ -113,7 +135,7 @@ export default function Roadmap() {
 
       {step === 2 && country && resultShown && result && (
         <section className="mt-8" aria-labelledby="result-heading">
-          <div className="grid gap-5 lg:grid-cols-[.85fr_1.15fr]"><div className="rounded-2xl border border-primary/20 bg-primary/5 p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-primary">{country.name} preparation result</p><h2 id="result-heading" className="mt-2 text-2xl font-black">You are {result.percentage}% prepared.</h2><div className="mt-6 grid place-items-center"><div className="grid h-40 w-40 place-items-center rounded-full border-[14px] border-primary/15 border-t-primary text-4xl font-black text-primary">{result.percentage}%</div></div><p className="mt-5 text-center text-xs leading-5 text-muted-foreground">{result.gatesMet}/{result.gatesTotal} official eligibility gates currently meet the calculator benchmark.</p><div className="mt-5 flex items-start gap-2 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-[11px] leading-5 text-muted-foreground"><ShieldAlert size={16} className="mt-0.5 shrink-0 text-amber-600" /><span>This is a product-defined preparation coverage score, not the official probability of getting a residency place. No universal country-wide formula converts exams, research or electives into match odds.</span></div></div><div className="space-y-5"><div className="rounded-2xl border border-border bg-card p-5"><h3 className="flex items-center gap-2 text-sm font-extrabold"><LockKeyhole size={16} className="text-destructive" /> Biggest eligibility gaps</h3><div className="mt-3 space-y-3">{result.blockers.length ? result.blockers.map(question => <div key={question.key} className="rounded-xl border border-destructive/15 bg-destructive/5 p-3"><p className="text-xs font-extrabold">{question.label}</p><p className="mt-1 text-[11px] leading-5 text-muted-foreground">{question.advice}</p></div>) : <p className="text-xs text-muted-foreground">No major gate is currently below the benchmark. Verify the named program before relying on the result.</p>}</div></div><div className="rounded-2xl border border-border bg-card p-5"><h3 className="text-sm font-extrabold">What would raise your score next?</h3><div className="mt-3 space-y-3">{result.improvements.map(question => <div key={question.key} className="flex items-start gap-3 rounded-xl bg-secondary/45 p-3"><span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-[10px] font-black text-primary-foreground">+</span><div><p className="text-xs font-extrabold">{question.label}</p><p className="mt-1 text-[11px] leading-5 text-muted-foreground">{question.advice}</p></div></div>)}</div></div><div className="flex flex-wrap gap-2"><button type="button" onClick={() => { setResultShown(false); setStep(1); }} className="btn-primary inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-extrabold"><ArrowLeft size={14} /> Edit answers</button><button type="button" onClick={reset} className="btn-quiet inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold"><RotateCcw size={14} /> Start again</button><a href={country.officialUrl} target="_blank" rel="noreferrer" className="btn-quiet inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold">Official rules <ExternalLink size={13} /></a></div></div></div>
+          <div className="grid gap-5 lg:grid-cols-[.85fr_1.15fr]"><div className="rounded-2xl border border-primary/20 bg-primary/5 p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-primary">{country.name} preparation result</p><h2 id="result-heading" className="mt-2 text-2xl font-black">You are {result.percentage}% prepared.</h2><div className="mt-6 grid place-items-center"><div className="grid h-40 w-40 place-items-center rounded-full border-[14px] border-primary/15 border-t-primary text-4xl font-black text-primary">{result.percentage}%</div></div><p className="mt-5 text-center text-xs leading-5 text-muted-foreground">{result.gatesMet}/{result.gatesTotal} official eligibility gates currently meet the calculator benchmark.</p><div className="mt-5 flex items-start gap-2 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-[11px] leading-5 text-muted-foreground"><ShieldAlert size={16} className="mt-0.5 shrink-0 text-amber-600" /><span>This is a product-defined preparation coverage score, not the official probability of getting a residency place. No universal country-wide formula converts exams, research or electives into match odds.</span></div></div><div className="space-y-5"><div className="rounded-2xl border border-border bg-card p-5"><h3 className="flex items-center gap-2 text-sm font-extrabold"><LockKeyhole size={16} className="text-destructive" /> Biggest eligibility gaps</h3><div className="mt-3 space-y-3">{result.blockers.length ? result.blockers.map(question => <div key={question.key} className="rounded-xl border border-destructive/15 bg-destructive/5 p-3"><p className="text-xs font-extrabold">{question.label}</p><p className="mt-1 text-[11px] leading-5 text-muted-foreground">{question.advice}</p></div>) : <p className="text-xs text-muted-foreground">No major gate is currently below the benchmark. Verify the named program before relying on the result.</p>}</div></div><div className="rounded-2xl border border-border bg-card p-5"><h3 className="text-sm font-extrabold">What would raise your score next?</h3><div className="mt-3 space-y-3">{result.improvements.map(question => <div key={question.key} className="flex items-start gap-3 rounded-xl bg-secondary/45 p-3"><span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-[10px] font-black text-primary-foreground">+</span><div><p className="text-xs font-extrabold">{question.label}</p><p className="mt-1 text-[11px] leading-5 text-muted-foreground">{question.advice}</p></div></div>)}</div></div><div className="flex flex-wrap items-center gap-2"><button type="button" onClick={saveResult} className="btn-primary inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-extrabold"><Save size={14} /> {savedResult?.percentage === result.percentage ? "Update saved result" : "Save result"}</button><button type="button" onClick={() => { setResultShown(false); setStep(1); }} className="btn-quiet inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold"><ArrowLeft size={14} /> Edit answers</button><button type="button" onClick={reset} className="btn-quiet inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold"><RotateCcw size={14} /> Start again</button><a href={country.officialUrl} target="_blank" rel="noreferrer" className="btn-quiet inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold">Official rules <ExternalLink size={13} /></a>{savedNotice && <span className="text-xs font-bold text-primary">Saved. It will appear on Home.</span>}</div></div></div>
         </section>
       )}
     </main>

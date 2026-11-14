@@ -29,6 +29,17 @@ export interface Profile {
   professionalQualifications: string;
   careerTimeline: string;
   residencyCycle: string;
+  roadmapResults: Record<
+    string,
+    {
+      percentage: number;
+      gatesMet: number;
+      gatesTotal: number;
+      specialty: string;
+      cycle: string;
+      savedAt: string;
+    }
+  >;
   residencyEvidence: Record<string, string>;
   residencyEvidenceStatuses: Record<
     string,
@@ -95,6 +106,7 @@ export const DEFAULT_PROFILE: Profile = {
   professionalQualifications: "",
   careerTimeline: "",
   residencyCycle: "",
+  roadmapResults: {},
   residencyEvidence: {},
   residencyEvidenceStatuses: {},
   roadmapRequirementStatuses: {},
@@ -175,6 +187,10 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     typeof stored.residencyEvidenceStatuses === "object"
       ? stored.residencyEvidenceStatuses
       : {};
+  const roadmapResults =
+    stored.roadmapResults && typeof stored.roadmapResults === "object"
+      ? stored.roadmapResults
+      : {};
   return {
     ...DEFAULT_PROFILE,
     ...stored,
@@ -184,6 +200,7 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     email: stored.email || email,
     residencyEvidence,
     residencyEvidenceStatuses,
+    roadmapResults,
     roadmapRequirementStatuses,
   };
 }
