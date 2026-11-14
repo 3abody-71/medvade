@@ -12,6 +12,7 @@ import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Roadmap from "./pages/Roadmap";
 import UsmleArticle from "./pages/UsmleArticle";
 import UkPrioritisationArticle from "./pages/UkPrioritisationArticle";
 import GermanyStatesArticle from "./pages/GermanyStatesArticle";
@@ -22,6 +23,7 @@ export default function App() {
     <SiteLayout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/roadmap" element={<Roadmap />} />
         <Route
           path="/explore"
           element={
