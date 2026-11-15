@@ -24,6 +24,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/roadmap" element={<Roadmap />} />
+        <Route path="/dashboard" element={<Navigate to="/roadmap#career-dashboard" replace />} />
         <Route
           path="/explore"
           element={

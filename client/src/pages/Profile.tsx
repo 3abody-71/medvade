@@ -141,6 +141,30 @@ export default function Profile() {
           </label>
 
           <label className="block">
+            <span className="text-xs font-bold">Medical school country</span>
+            <input
+              type="text"
+              value={profile.medicalSchoolCountry}
+              onChange={e => update({ medicalSchoolCountry: e.target.value })}
+              placeholder="Country where you studied medicine"
+              className="mt-2 h-10 w-full rounded-lg border border-border bg-background/60 px-3 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+              data-testid="input-medical-school-country"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-xs font-bold">Nationality</span>
+            <input
+              type="text"
+              value={profile.nationality}
+              onChange={e => update({ nationality: e.target.value })}
+              placeholder="Your nationality"
+              className="mt-2 h-10 w-full rounded-lg border border-border bg-background/60 px-3 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+              data-testid="input-nationality"
+            />
+          </label>
+
+          <label className="block">
             <span className="text-xs font-bold">Current year of study</span>
             <div className="relative mt-2">
               <select
@@ -224,6 +248,37 @@ export default function Profile() {
                 className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               />
             </div>
+          </label>
+
+          <label className="block">
+            <span className="text-xs font-bold">Internship status</span>
+            <div className="relative mt-2">
+              <select
+                value={profile.internshipStatus}
+                onChange={e => update({ internshipStatus: e.target.value })}
+                className="h-10 w-full appearance-none rounded-lg border border-border bg-background/60 px-3 pr-9 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+                data-testid="select-internship-status"
+              >
+                <option value="">Select internship status</option>
+                <option value="Not started">Not started</option>
+                <option value="In progress">In progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Not applicable">Not applicable</option>
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            </div>
+          </label>
+
+          <label className="block">
+            <span className="text-xs font-bold">Internship country</span>
+            <input
+              type="text"
+              value={profile.internshipCountry}
+              onChange={e => update({ internshipCountry: e.target.value })}
+              placeholder="Country where internship was completed"
+              className="mt-2 h-10 w-full rounded-lg border border-border bg-background/60 px-3 text-sm outline-hidden focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+              data-testid="input-internship-country"
+            />
           </label>
 
           <label className="block">

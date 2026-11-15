@@ -15,12 +15,15 @@ export interface Profile {
   lastName: string;
   email: string;
   medicalSchool: string;
+  medicalSchoolCountry: string;
   currentCountry: string;
   nationality: string;
   currentStudyYear: string;
   residenceCost: string;
   graduationYear: string;
   graduationStatus: string;
+  internshipStatus: string;
+  internshipCountry: string;
   targetCountries: string[];
   mainGoal: string;
   targetSpecialty: string;
@@ -44,6 +47,15 @@ export interface Profile {
   residencyEvidenceStatuses: Record<
     string,
     "verified" | "in-progress" | "not-met" | "unknown" | "not-applicable"
+  >;
+  eligibilityStatuses: Record<
+    string,
+    | "verified"
+    | "completed"
+    | "in-progress"
+    | "missing"
+    | "not-applicable"
+    | "needs-verification"
   >;
   roadmapRequirementStatuses: Record<
     string,
@@ -92,12 +104,15 @@ export const DEFAULT_PROFILE: Profile = {
   lastName: "",
   email: "",
   medicalSchool: "",
+  medicalSchoolCountry: "",
   currentCountry: "",
   nationality: "",
   currentStudyYear: "",
   residenceCost: "",
   graduationYear: "",
   graduationStatus: "",
+  internshipStatus: "",
+  internshipCountry: "",
   targetCountries: [],
   mainGoal: "",
   targetSpecialty: "",
@@ -109,6 +124,7 @@ export const DEFAULT_PROFILE: Profile = {
   roadmapResults: {},
   residencyEvidence: {},
   residencyEvidenceStatuses: {},
+  eligibilityStatuses: {},
   roadmapRequirementStatuses: {},
   interests: [],
   priorities: [],
@@ -187,6 +203,11 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     typeof stored.residencyEvidenceStatuses === "object"
       ? stored.residencyEvidenceStatuses
       : {};
+  const eligibilityStatuses =
+    stored.eligibilityStatuses &&
+    typeof stored.eligibilityStatuses === "object"
+      ? stored.eligibilityStatuses
+      : {};
   const roadmapResults =
     stored.roadmapResults && typeof stored.roadmapResults === "object"
       ? stored.roadmapResults
@@ -201,6 +222,7 @@ function normalizeProfile(stored: Partial<Profile>, email = ""): Profile {
     residencyEvidence,
     residencyEvidenceStatuses,
     roadmapResults,
+    eligibilityStatuses,
     roadmapRequirementStatuses,
   };
 }

@@ -16,6 +16,7 @@ import {
   HelpCircle,
   GraduationCap,
   Languages,
+  Route,
 } from "lucide-react";
 import { assetPath } from "../lib/assetPath";
 import { useAuth } from "../contexts/AuthContext";
@@ -43,9 +44,9 @@ const NAV_ITEMS = [
     enabled: FEATURE_VISIBILITY.mentors,
   },
   {
-    href: "/profile",
-    label: "Discover your pathway",
-    icon: User,
+    href: "/roadmap",
+    label: "Career Roadmap",
+    icon: Route,
     enabled: true,
   },
   { href: "/community", label: "Community", icon: Users, enabled: true },
@@ -56,7 +57,7 @@ const NAV_LABELS: Record<string, string> = {
   Specialties: "التخصصات",
   Questions: "الأسئلة",
   Mentors: "المرشدون",
-  "Discover your pathway": "اكتشف مسارك",
+  "Career Roadmap": "خريطة المسار المهني",
   Community: "المجتمع",
 };
 
@@ -258,12 +259,21 @@ export default function SiteLayout({
               {darkMode ? <Sun size={17} /> : <Moon size={17} />}
             </button>
             {user ? (
-              <button
-                className="btn-quiet hidden items-center gap-2 rounded-lg px-4 py-2 text-sm sm:inline-flex"
-                onClick={() => void signOut()}
-              >
-                {text("Sign out", "تسجيل الخروج")}
-              </button>
+              <>
+                <Link
+                  to="/profile"
+                  className="btn-quiet hidden items-center gap-2 rounded-lg px-4 py-2 text-sm sm:inline-flex"
+                >
+                  <User size={15} />
+                  {text("My profile", "ملفي الشخصي")}
+                </Link>
+                <button
+                  className="btn-quiet hidden items-center gap-2 rounded-lg px-4 py-2 text-sm sm:inline-flex"
+                  onClick={() => void signOut()}
+                >
+                  {text("Sign out", "تسجيل الخروج")}
+                </button>
+              </>
             ) : (
               <Link
                 to="/auth"
@@ -384,8 +394,8 @@ export default function SiteLayout({
                   </>
                 )}
               </Link>
-              <Link to="/profile" className="footer-link">
-                {text("Discover your pathway", "اكتشف مسارك")}
+              <Link to="/roadmap" className="footer-link">
+                {text("Career Roadmap", "خريطة المسار المهني")}
               </Link>
             </div>
 
