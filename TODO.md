@@ -8,3 +8,5 @@
 - [x] Show official gates separately from competitive/context evidence and display blockers that cannot be offset by research or electives.
 - [x] Explain that the percentage is preparation/readiness coverage, not an official weighting, national ranking, match probability, interview prediction, or guarantee.
 - [x] Persist cycle, answers, and statuses inside the existing local/authenticated profile data.
+- [x] After calculating the percentage, explain the largest score gaps with the current input, missing percentage-point impact, and the calculator benchmark/target needed for full credit.
+- [x] Show an estimated percentage after fixing each listed gap while keeping the preparation score clearly separate from match probability.
