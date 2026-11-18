@@ -10,3 +10,5 @@
 - [x] Persist cycle, answers, and statuses inside the existing local/authenticated profile data.
 - [x] After calculating the percentage, explain the largest score gaps with the current input, missing percentage-point impact, and the calculator benchmark/target needed for full credit.
 - [x] Show an estimated percentage after fixing each listed gap while keeping the preparation score clearly separate from match probability.
+- [x] Redesign the first roadmap screen around destination, specialty, and current academic/professional stage, with meaningful country card details and a guarded continue action.
+- [x] Add a personalized roadmap summary and dynamically prioritized next action to the assessment result.

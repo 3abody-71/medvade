@@ -12,7 +12,8 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useApp } from "../contexts/AppContext";
+import { GRADUATION_STATUSES, useApp } from "../contexts/AppContext";
+import specialties from "../data/specialties.json";
 import {
   answerKey,
   calculateRoadmap,
@@ -48,8 +49,20 @@ function CountryCard({
       <p className="mt-2 text-xs leading-5 text-muted-foreground">
         {country.summary}
       </p>
+      <div className="mt-4 space-y-1.5 text-[11px] leading-5 text-muted-foreground">
+        <p>
+          <span className="font-extrabold text-foreground">Licensing:</span>{" "}
+          {country.questions.filter(question => question.gate).length} assessed
+          eligibility gates
+        </p>
+        <p>
+          <span className="font-extrabold text-foreground">Pathway:</span>{" "}
+          {country.questions.find(question => question.gate)?.label ||
+            "Country-specific requirements"}
+        </p>
+      </div>
       <p className="mt-4 text-[10px] font-extrabold uppercase tracking-wider text-primary">
-        {country.questions.length} tailored checks
+        {country.questions.length} tailored checks · official sources linked
       </p>
     </button>
   );
@@ -149,6 +162,7 @@ export default function Roadmap() {
   }, [country, profile.residencyEvidence]);
   const result = country ? calculateRoadmap(country, answers) : null;
   const savedResult = country ? profile.roadmapResults[country.id] : undefined;
+  const nextGap = result?.gaps[0];
 
   const updateAnswer = (question: RoadmapQuestion, value: string) => {
     if (!country) return;
@@ -202,12 +216,11 @@ export default function Roadmap() {
         <div>
           <div className="eyebrow">Personal Career Roadmap</div>
           <h1 className="mt-2 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl">
-            Build your residency route, country by country.
+            Build Your Medical Career Roadmap
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Choose one destination, answer the requirements for that system, and
-            receive a transparent preparation score with the largest gaps to fix
-            next.
+            Choose your destination and specialty. We’ll map the requirements,
+            identify your gaps, and build your personalized preparation plan.
           </p>
         </div>
         <Link
@@ -219,7 +232,7 @@ export default function Roadmap() {
       </div>
 
       <div className="mt-8 grid gap-2 sm:grid-cols-3">
-        {["Choose country", "Answer requirements", "Review readiness"].map(
+        {["Build your profile", "Complete assessment", "Review your plan"].map(
           (label, index) => (
             <div
               key={label}
@@ -240,14 +253,71 @@ export default function Roadmap() {
                 id="country-choice-heading"
                 className="text-xl font-extrabold"
               >
-                First, choose the country you want to enter.
+                Start with your destination and career profile.
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                The next page changes its questions and scoring inputs to match
-                this destination.
+                Your specialty and current stage determine which preparation
+                steps matter now and which can wait.
               </p>
             </div>
             <Target className="hidden text-primary sm:block" />
+          </div>
+          <div className="mt-5 grid gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:grid-cols-3">
+            <label className="rounded-xl border border-border bg-card p-3">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+                Destination country
+              </span>
+              <p className="mt-2 text-xs font-bold">
+                {country?.name || "Choose a country below"}
+              </p>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Country-specific licensing and entry rules
+              </p>
+            </label>
+            <label className="rounded-xl border border-border bg-card p-3">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+                Medical specialty
+              </span>
+              <input
+                list="specialty-options"
+                value={profile.targetSpecialty}
+                onChange={event =>
+                  setProfile(current => ({
+                    ...current,
+                    targetSpecialty: event.target.value,
+                  }))
+                }
+                placeholder="e.g. Internal Medicine"
+                className="mt-2 h-9 w-full rounded-lg border border-border bg-background/50 px-2.5 text-xs outline-hidden focus:border-primary/50"
+              />
+              <datalist id="specialty-options">
+                {specialties.map(specialty => (
+                  <option key={specialty.id} value={specialty.name} />
+                ))}
+              </datalist>
+            </label>
+            <label className="rounded-xl border border-border bg-card p-3">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+                Current academic / professional stage
+              </span>
+              <select
+                value={profile.graduationStatus}
+                onChange={event =>
+                  setProfile(current => ({
+                    ...current,
+                    graduationStatus: event.target.value,
+                  }))
+                }
+                className="mt-2 h-9 w-full rounded-lg border border-border bg-background/50 px-2.5 text-xs outline-hidden focus:border-primary/50"
+              >
+                <option value="">Select your current stage</option>
+                {GRADUATION_STATUSES.map(status => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {ROADMAP_COUNTRIES.map(item => (
@@ -265,11 +335,15 @@ export default function Roadmap() {
           <div className="mt-6 flex justify-end">
             <button
               type="button"
-              disabled={!country}
+              disabled={
+                !country ||
+                !profile.targetSpecialty.trim() ||
+                !profile.graduationStatus
+              }
               onClick={() => setStep(1)}
               className="btn-primary inline-flex items-center gap-2 rounded-lg px-5 py-3 text-xs font-extrabold disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Continue to requirements <ArrowRight size={14} />
+              Continue to assessment <ArrowRight size={14} />
             </button>
           </div>
         </section>
@@ -363,6 +437,89 @@ export default function Roadmap() {
 
       {step === 2 && country && resultShown && result && (
         <section className="mt-8" aria-labelledby="result-heading">
+          <div className="mb-5 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div className="eyebrow">Your Medical Career Roadmap</div>
+                <h2 className="mt-2 text-2xl font-black">
+                  {country.name} <span className="text-primary">→</span>{" "}
+                  {profile.targetSpecialty || "Specialty not selected"}
+                </h2>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {profile.graduationStatus || "Current stage not selected"}
+                  {profile.residencyCycle
+                    ? ` · Target cycle ${profile.residencyCycle}`
+                    : ""}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setStep(0);
+                  setResultShown(false);
+                }}
+                className="btn-quiet inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold"
+              >
+                Edit profile <ArrowRight size={13} />
+              </button>
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-xl bg-secondary/45 p-3">
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+                  Assessment progress
+                </p>
+                <p className="mt-1 text-xl font-black text-primary">
+                  {result.percentage}%
+                </p>
+              </div>
+              <div className="rounded-xl bg-secondary/45 p-3">
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+                  Eligibility checks
+                </p>
+                <p className="mt-1 text-xl font-black">
+                  {result.gatesMet}/{result.gatesTotal}
+                </p>
+              </div>
+              <div className="rounded-xl bg-primary/5 p-3">
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-primary">
+                  Next action
+                </p>
+                <p className="mt-1 text-xs font-black">
+                  {nextGap
+                    ? nextGap.question.label
+                    : "Verify your target programme"}
+                </p>
+              </div>
+            </div>
+            {nextGap && (
+              <div className="mt-4 flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-primary">
+                    Your next action
+                  </p>
+                  <p className="mt-1 text-sm font-black">
+                    {nextGap.question.type === "number"
+                      ? `Reach ${nextGap.target} for ${nextGap.question.label}`
+                      : `${nextGap.question.label}: ${nextGap.target}`}
+                  </p>
+                  <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
+                    This is the largest current score gap. Fixing it could raise
+                    the estimated result to {nextGap.projectedPercentage}%.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setResultShown(false);
+                    setStep(1);
+                  }}
+                  className="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-extrabold"
+                >
+                  Continue assessment <ArrowRight size={13} />
+                </button>
+              </div>
+            )}
+          </div>
           <div className="grid gap-5 lg:grid-cols-[.85fr_1.15fr]">
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6">
               <p className="text-xs font-extrabold uppercase tracking-wider text-primary">
