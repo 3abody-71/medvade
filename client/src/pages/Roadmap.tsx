@@ -12,7 +12,11 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { GRADUATION_STATUSES, useApp } from "../contexts/AppContext";
+import {
+  GRADUATION_STATUSES,
+  type Profile,
+  useApp,
+} from "../contexts/AppContext";
 import specialties from "../data/specialties.json";
 import {
   answerKey,
@@ -24,15 +28,35 @@ import {
 } from "../data/roadmapReadiness";
 import CareerDashboard from "./CareerDashboard";
 
+const FLAG_IMAGES: Record<string, string> = {
+  usa: "/assets/flags/roadmap/usa.png",
+  uk: "/assets/flags/roadmap/uk.png",
+  australia: "/assets/flags/roadmap/australia.png",
+  canada: "/assets/flags/roadmap/canada.png",
+  germany: "/assets/flags/roadmap/germany.png",
+  ireland: "/assets/flags/roadmap/ireland.png",
+};
+
+const CARD_REVIEW_DATE = "18 Nov 2026";
+
 function CountryCard({
   country,
+  profile,
   selected,
   onClick,
 }: {
   country: RoadmapCountry;
+  profile: Profile;
   selected: boolean;
   onClick: () => void;
 }) {
+  const gates = country.questions.filter(question => question.gate);
+  const profileReady = Boolean(
+    profile.nationality.trim() &&
+      profile.currentCountry.trim() &&
+      profile.graduationStatus &&
+      profile.languageProficiency
+  );
   return (
     <button
       type="button"
@@ -40,8 +64,12 @@ function CountryCard({
       className={`text-left rounded-2xl border p-5 transition ${selected ? "border-primary bg-primary/5 shadow-md" : "border-border bg-card hover:-translate-y-0.5 hover:border-primary/40"}`}
     >
       <div className="flex items-center justify-between">
-        <span className="grid h-11 w-11 place-items-center rounded-xl bg-secondary text-xs font-black">
-          {country.flag}
+        <span className="block h-11 w-16 overflow-hidden rounded-xl border border-border bg-secondary shadow-sm">
+          <img
+            src={FLAG_IMAGES[country.id]}
+            alt={`${country.name} national flag`}
+            className="h-full w-full object-cover"
+          />
         </span>
         {selected && <CheckCircle2 size={19} className="text-primary" />}
       </div>
@@ -49,20 +77,40 @@ function CountryCard({
       <p className="mt-2 text-xs leading-5 text-muted-foreground">
         {country.summary}
       </p>
-      <div className="mt-4 space-y-1.5 text-[11px] leading-5 text-muted-foreground">
+      <div className="mt-4 space-y-2 text-[11px] leading-5 text-muted-foreground">
         <p>
-          <span className="font-extrabold text-foreground">Licensing:</span>{" "}
-          {country.questions.filter(question => question.gate).length} assessed
-          eligibility gates
+          <span className="font-extrabold text-foreground">
+            Requirements assessed:
+          </span>{" "}
+          {country.questions.length}
         </p>
         <p>
-          <span className="font-extrabold text-foreground">Pathway:</span>{" "}
-          {country.questions.find(question => question.gate)?.label ||
-            "Country-specific requirements"}
+          <span className="font-extrabold text-foreground">Entry gates:</span>{" "}
+          {gates
+            .slice(0, 3)
+            .map(question => question.label)
+            .join(" · ")}
+        </p>
+        <p>
+          <span className="font-extrabold text-foreground">Complexity:</span>{" "}
+          Not rated — no validated complexity scale is used.
         </p>
       </div>
-      <p className="mt-4 text-[10px] font-extrabold uppercase tracking-wider text-primary">
-        {country.questions.length} tailored checks · official sources linked
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-[10px] font-extrabold">
+        <span
+          className={`rounded-full border px-2 py-1 ${profileReady ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-700" : "border-amber-500/20 bg-amber-500/10 text-amber-700"}`}
+        >
+          {profileReady
+            ? "Initial profile ready"
+            : "Needs initial verification"}
+        </span>
+        <span className="text-muted-foreground">
+          Reviewed {CARD_REVIEW_DATE}
+        </span>
+      </div>
+      <p className="mt-3 text-[10px] leading-4 text-muted-foreground">
+        Initial status is not an eligibility decision. Confirm the linked
+        official rules for your exact profile.
       </p>
     </button>
   );
@@ -324,6 +372,7 @@ export default function Roadmap() {
               <CountryCard
                 key={item.id}
                 country={item}
+                profile={profile}
                 selected={countryId === item.id}
                 onClick={() => {
                   setCountryId(item.id);
