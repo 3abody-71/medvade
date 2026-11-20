@@ -25,7 +25,13 @@ export type UsaIconName =
   | "wallet";
 
 export type UsaReason = { title: string; body: string; icon: UsaIconName };
-export type UsaRequirement = { title: string; body: string; details: string[]; icon: UsaIconName };
+export type UsaRequirement = {
+  title: string;
+  body: string;
+  details: string[];
+  link?: { label: string; url: string };
+  icon: UsaIconName;
+};
 export type UsaApplicationRequirement = { number: number; title: string; body: string; icon: UsaIconName };
 export type UsaStage = { number: number; title: string; body: string };
 export type UsaExamDetail = {
@@ -48,8 +54,8 @@ const image = (name: string) => `/assets/usa/${name}`;
 
 export const usaPathway = {
   reasons: [
-    { title: "High salaries", body: "The USA offers some of the highest physician salaries in the world, especially after residency.", icon: "dollar" },
-    { title: "Advanced medicine", body: "Many hospitals use leading medical technology, tools, and treatments.", icon: "hospital" },
+    { title: "High salaries", body: "The USA offers high physician salaries, especially after residency.", icon: "dollar" },
+    { title: "Advanced medicine", body: "The USA is a global leader in medical technology, tools, and treatments.", icon: "hospital" },
     { title: "Residency and research", body: "Powerful residency programs, research opportunities, and experienced doctors are available across the country.", icon: "graduation" },
     { title: "Trusted reputation", body: "U.S. medical training and institutions have a strong global reputation.", icon: "globe" },
     { title: "A lot of opportunity", body: "The USA is a large country with many jobs, specialties, cities, and career opportunities.", icon: "briefcase" },
@@ -64,11 +70,12 @@ export const usaPathway = {
         "MyIntealth account, identity documents, diploma, transcript, and primary-source verification.",
         "A realistic plan for exam fees, applications, travel, clinical experience, visa, and living costs.",
       ],
+      link: { label: "Check your school in the World Directory of Medical Schools", url: "https://search.wdoms.org/" },
       icon: "file",
     },
     {
       title: "USMLE Step 1, Step 2 CK, and Step 3",
-      body: "International medical students may take Step 1 and Step 2 CK before graduation when they meet the current ECFMG/USMLE eligibility rules. Graduation is not a universal prerequisite for these two exams.",
+      body: "International medical students may take Step 1 and Step 2 CK before graduation when they meet the current ECFMG/USMLE eligibility rules.",
       details: [
         "At application and on exam day, you must be officially enrolled in an eligible international medical school or be a qualifying graduate.",
         "The school must be listed in the World Directory of Medical Schools as meeting ECFMG eligibility requirements, and the school may need to confirm enrollment and completion of the basic medical science component.",

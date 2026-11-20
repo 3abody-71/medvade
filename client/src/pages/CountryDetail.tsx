@@ -340,13 +340,6 @@ export default function CountryDetail() {
               <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
                 {displayName}
               </h1>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {uiText(
-                  isArabic,
-                  "Pathway context for international medical graduates",
-                  "معلومات المسار للخريجين الطبيين الدوليين"
-                )}
-              </p>
             </div>
             <button
               onClick={() => toggleCountry(country.id)}
