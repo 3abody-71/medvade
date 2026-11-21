@@ -64,7 +64,7 @@ function CountryCard({
       className={`text-left rounded-2xl border p-5 transition ${selected ? "border-primary bg-primary/5 shadow-md" : "border-border bg-card hover:-translate-y-0.5 hover:border-primary/40"}`}
     >
       <div className="flex items-center justify-between">
-        <span className="block h-11 w-16 overflow-hidden rounded-xl border border-border bg-secondary shadow-sm">
+        <span className="block h-7 w-10 overflow-hidden rounded-md border border-border bg-secondary shadow-sm">
           <img
             src={FLAG_IMAGES[country.id]}
             alt={`${country.name} national flag`}
@@ -73,7 +73,7 @@ function CountryCard({
         </span>
         {selected && <CheckCircle2 size={19} className="text-primary" />}
       </div>
-      <h3 className="mt-4 text-lg font-extrabold">{country.name}</h3>
+      <h3 className="mt-3 text-lg font-extrabold">{country.name}</h3>
       <p className="mt-2 text-xs leading-5 text-muted-foreground">
         {country.summary}
       </p>
