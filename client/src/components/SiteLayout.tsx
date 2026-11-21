@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   User,
@@ -17,13 +17,11 @@ import {
   GraduationCap,
   Languages,
   Route,
-  Search,
 } from "lucide-react";
 import { assetPath } from "../lib/assetPath";
 import { useAuth } from "../contexts/AuthContext";
 import { LANGUAGE_LABELS, useApp } from "../contexts/AppContext";
 import { FEATURE_VISIBILITY } from "../config/featureVisibility";
-import GlobalSearch from "./GlobalSearch";
 
 const NAV_ITEMS = [
   { href: "/", label: "Countries", icon: Stethoscope, enabled: true },
@@ -73,8 +71,6 @@ export default function SiteLayout({
   const [darkMode, setDarkMode] = useState(
     () => window.localStorage.getItem("medvade-theme") === "dark",
   );
-  const [searchOpen, setSearchOpen] = useState(false);
-  const searchButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { language, setLanguage, isArabic } = useApp();
@@ -105,11 +101,6 @@ export default function SiteLayout({
   const changeLanguage = (nextLanguage: "en" | "ar") => {
     localStorage.setItem("medvade-language", nextLanguage);
     setLanguage(nextLanguage);
-  };
-
-  const closeSearch = () => {
-    setSearchOpen(false);
-    requestAnimationFrame(() => searchButtonRef.current?.focus());
   };
 
   return (
@@ -150,21 +141,6 @@ export default function SiteLayout({
           </nav>
 
           <div className="topbar-header-actions flex items-center gap-1.5 sm:gap-2">
-            <button
-              ref={searchButtonRef}
-              type="button"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-border px-2.5 text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:px-3"
-              onClick={() => setSearchOpen(true)}
-              aria-label={text("Search MedVade", "البحث في ميدفايد")}
-              title={text("Search (Ctrl/⌘+K)", "بحث (Ctrl/⌘+K)")}
-              data-testid="button-global-search"
-            >
-              <Search size={17} />
-              <span className="hidden sm:inline">{text("Search", "بحث")}</span>
-              <kbd className="hidden rounded border border-border px-1 py-0.5 text-[10px] font-medium lg:inline">
-                Ctrl/⌘K
-              </kbd>
-            </button>
             <button
               type="button"
               className="notranslate inline-flex h-9 items-center gap-1.5 rounded-lg border border-border px-2.5 text-xs font-bold text-muted-foreground hover:border-primary hover:text-primary sm:px-3"
@@ -294,13 +270,6 @@ export default function SiteLayout({
           </div>
         )}
       </header>
-
-      <GlobalSearch
-        open={searchOpen}
-        onClose={closeSearch}
-        onOpen={() => setSearchOpen(true)}
-        isArabic={isArabic}
-      />
 
       <main className="mx-auto w-full max-w-[1450px] flex-1 px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
         {children}
