@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: ["./client/index.html", "./client/src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -16,6 +17,27 @@ export default {
         accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
         popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
         card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
+        info: {
+          surface: "hsl(var(--info-surface))",
+          border: "hsl(var(--info-border))",
+          foreground: "hsl(var(--info-foreground))",
+        },
+        warning: {
+          surface: "hsl(var(--warning-surface))",
+          border: "hsl(var(--warning-border))",
+          foreground: "hsl(var(--warning-foreground))",
+          accent: "hsl(var(--warning-accent))",
+        },
+        success: {
+          surface: "hsl(var(--success-surface))",
+          border: "hsl(var(--success-border))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        error: {
+          surface: "hsl(var(--error-surface))",
+          border: "hsl(var(--error-border))",
+          foreground: "hsl(var(--error-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

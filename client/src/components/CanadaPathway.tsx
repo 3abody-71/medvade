@@ -217,7 +217,7 @@ export default function CanadaPathway() {
               <div className="flex items-start gap-4">
                 <IconBox
                   name={requirement.icon}
-                  className="bg-[#fce9eb] text-[#b52237]"
+                  className="bg-error-surface text-error-foreground"
                 />
                 <div>
                   <h3 className="text-lg font-extrabold">
@@ -245,9 +245,9 @@ export default function CanadaPathway() {
             </article>
           ))}
         </div>
-        <div className="mt-6 rounded-2xl border border-[#e5c992] bg-[#fffaf0] p-6 shadow-sm">
+        <div className="mt-6 rounded-2xl border border-warning-border bg-warning-surface p-6 shadow-sm">
           <div className="flex items-start gap-3">
-            <IconBox name="alert" className="bg-[#ffedbd] text-[#9a5b12]" />
+            <IconBox name="alert" className="bg-warning-accent text-warning-foreground" />
             <p className="text-sm leading-6 text-muted-foreground">
               <strong className="text-foreground">
                 Important distinction:
@@ -338,10 +338,10 @@ export default function CanadaPathway() {
             </div>
           </aside>
         </div>
-        <div className="mt-7 overflow-hidden rounded-2xl border border-[#e4c0c3] bg-[#fff8f8] shadow-sm">
+        <div className="mt-7 overflow-hidden rounded-2xl border border-error-border bg-error-surface shadow-sm">
           <div className="grid gap-0 lg:grid-cols-[1fr_250px]">
             <div className="min-w-0 p-6 sm:p-7">
-              <div className="eyebrow text-[#a52b3b]">Planning costs / CAD</div>
+              <div className="eyebrow text-error-foreground">Planning costs / CAD</div>
               <h3 className="mt-1 text-2xl font-extrabold">
                 Budget for the pathway, not only the exam
               </h3>
@@ -351,12 +351,12 @@ export default function CanadaPathway() {
                 costs change. Check the current official fee before paying.
               </p>
               <div
-                className="pathway-costs-table mt-5 min-w-0 max-w-full overflow-hidden rounded-xl border border-[#efd7d8] bg-white"
+                className="pathway-costs-table mt-5 min-w-0 max-w-full overflow-hidden rounded-xl border border-error-border bg-card"
                 role="region"
                 aria-label="Canada pathway costs table"
               >
                 <table className="w-full table-fixed text-left text-sm">
-                  <thead className="bg-[#fff0f1] text-xs uppercase tracking-wider text-[#8e3541]">
+                  <thead className="bg-error-surface text-xs uppercase tracking-wider text-error-foreground">
                     <tr>
                       <th className="w-[29%] break-words px-2 py-2 text-[10px] leading-4 font-extrabold sm:px-4 sm:py-3 sm:text-xs">
                         Item
@@ -373,12 +373,12 @@ export default function CanadaPathway() {
                     {canadaPathway.costItems.map(cost => (
                       <tr
                         key={cost.item}
-                        className="border-t border-[#f1e3e4] align-top"
+                        className="border-t border-error-border align-top"
                       >
                         <td className="break-words px-2 py-2 text-[11px] leading-4 font-bold sm:px-4 sm:py-3 sm:text-sm">
                           {cost.item}
                         </td>
-                        <td className="break-words px-2 py-2 text-[11px] leading-4 font-extrabold text-[#a52b3b] sm:px-4 sm:py-3 sm:text-sm">
+                        <td className="break-words px-2 py-2 text-[11px] leading-4 font-extrabold text-error-foreground sm:px-4 sm:py-3 sm:text-sm">
                           {cost.amount}
                         </td>
                         <td className="break-words px-2 py-2 text-[10px] leading-4 text-muted-foreground sm:px-4 sm:py-3 sm:text-xs sm:leading-5">
@@ -396,13 +396,13 @@ export default function CanadaPathway() {
                 {canadaPathway.costItems.map(cost => (
                   <article
                     key={cost.item}
-                    className="rounded-xl border border-[#efd7d8] bg-white p-4"
+                    className="rounded-xl border border-error-border bg-card p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <h4 className="text-sm font-extrabold text-[#6d2430]">
+                      <h4 className="text-sm font-extrabold text-error-foreground">
                         {cost.item}
                       </h4>
-                      <span className="shrink-0 text-sm font-extrabold text-[#a52b3b]">
+                      <span className="shrink-0 text-sm font-extrabold text-error-foreground">
                         {cost.amount}
                       </span>
                     </div>
@@ -491,14 +491,14 @@ export default function CanadaPathway() {
             </table>
           </div>
         </div>
-        <div className="mt-5 overflow-hidden rounded-2xl border border-[#b8dccf] bg-[#f3fbf7] p-6 shadow-sm">
+        <div className="mt-5 overflow-hidden rounded-2xl border border-success-border bg-success-surface p-6 shadow-sm">
           <div className="flex items-start gap-4">
             <IconBox
               name="stethoscope"
-              className="bg-[#dff5e9] text-[#267a5b]"
+              className="bg-success-surface text-success-foreground"
             />
             <div>
-              <div className="eyebrow text-[#267a5b]">
+              <div className="eyebrow text-success-foreground">
                 Specialty outlook for IMGs
               </div>
               <h3 className="mt-1 text-2xl font-extrabold tracking-tight">
@@ -518,8 +518,8 @@ export default function CanadaPathway() {
             </div>
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-xl bg-white/75 p-4">
-              <p className="text-xs font-extrabold uppercase tracking-wide text-[#267a5b]">
+            <div className="rounded-xl bg-card/75 p-4">
+              <p className="text-xs font-extrabold uppercase tracking-wide text-success-foreground">
                 More opportunities
               </p>
               <p className="mt-1 text-sm leading-5">
@@ -527,8 +527,8 @@ export default function CanadaPathway() {
                 regional, rural, and remote communities.
               </p>
             </div>
-            <div className="rounded-xl bg-white/75 p-4">
-              <p className="text-xs font-extrabold uppercase tracking-wide text-[#267a5b]">
+            <div className="rounded-xl bg-card/75 p-4">
+              <p className="text-xs font-extrabold uppercase tracking-wide text-success-foreground">
                 Broader province options
               </p>
               <p className="mt-1 text-sm leading-5">
@@ -536,8 +536,8 @@ export default function CanadaPathway() {
                 communities and program streams.
               </p>
             </div>
-            <div className="rounded-xl bg-white/75 p-4">
-              <p className="text-xs font-extrabold uppercase tracking-wide text-[#267a5b]">
+            <div className="rounded-xl bg-card/75 p-4">
+              <p className="text-xs font-extrabold uppercase tracking-wide text-success-foreground">
                 Not guaranteed
               </p>
               <p className="mt-1 text-sm leading-5">
@@ -586,9 +586,9 @@ export default function CanadaPathway() {
             </article>
           ))}
         </div>
-        <div className="mt-5 rounded-2xl border border-[#e5c992] bg-[#fffaf0] p-6 shadow-sm">
+        <div className="mt-5 rounded-2xl border border-warning-border bg-warning-surface p-6 shadow-sm">
           <div className="flex items-start gap-3">
-            <IconBox name="alert" className="bg-[#ffedbd] text-[#9a5b12]" />
+            <IconBox name="alert" className="bg-warning-accent text-warning-foreground" />
             <div>
               <h3 className="text-lg font-extrabold">Before you apply</h3>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -599,7 +599,7 @@ export default function CanadaPathway() {
                   >
                     <CheckCircle2
                       size={15}
-                      className="mt-1 shrink-0 text-[#9a5b12]"
+                      className="mt-1 shrink-0 text-warning-foreground"
                     />
                     {item}
                   </div>
@@ -620,8 +620,8 @@ export default function CanadaPathway() {
           id="tradeoffs-canada-heading"
           className="mt-5 grid gap-5 lg:grid-cols-2"
         >
-          <div className="rounded-2xl border border-[#b8dccf] bg-[#f3fbf7] p-6">
-            <div className="flex items-center gap-2 text-[#267a5b]">
+          <div className="rounded-2xl border border-success-border bg-success-surface p-6">
+            <div className="flex items-center gap-2 text-success-foreground">
               <CheckCircle2 size={18} />
               <h3 className="text-base font-extrabold">Advantages</h3>
             </div>
@@ -633,15 +633,15 @@ export default function CanadaPathway() {
                 >
                   <CheckCircle2
                     size={15}
-                    className="mt-1 shrink-0 text-[#267a5b]"
+                    className="mt-1 shrink-0 text-success-foreground"
                   />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-[#e6c39b] bg-[#fff9f0] p-6">
-            <div className="flex items-center gap-2 text-[#ad6a16]">
+          <div className="rounded-2xl border border-warning-border bg-warning-surface p-6">
+            <div className="flex items-center gap-2 text-warning-foreground">
               <Scale size={18} />
               <h3 className="text-base font-extrabold">Disadvantages</h3>
             </div>
@@ -651,7 +651,7 @@ export default function CanadaPathway() {
                   key={item}
                   className="flex items-start gap-2.5 text-sm leading-6"
                 >
-                  <Scale size={15} className="mt-1 shrink-0 text-[#ad6a16]" />
+                  <Scale size={15} className="mt-1 shrink-0 text-warning-foreground" />
                   {item}
                 </li>
               ))}
@@ -682,7 +682,7 @@ export default function CanadaPathway() {
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-10">
-                  <span className="rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-[#245066]">
+                  <span className="rounded-full bg-card/90 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-info-foreground">
                     {hospital.province}
                   </span>
                 </div>

@@ -70,7 +70,9 @@ export default function SiteLayout({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    () => window.localStorage.getItem("medvade-theme") === "dark",
+  );
   const [searchOpen, setSearchOpen] = useState(false);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
@@ -78,11 +80,6 @@ export default function SiteLayout({
   const { language, setLanguage, isArabic } = useApp();
   const text = (english: string, arabic: string) =>
     isArabic ? arabic : english;
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem("medvade-theme");
-    setDarkMode(savedTheme === "dark");
-  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -124,13 +121,13 @@ export default function SiteLayout({
         <div className="mx-auto flex h-[68px] max-w-[1450px] items-center justify-between px-4 sm:px-6 lg:px-10">
           <Link
             to="/"
-            className="flex items-center gap-3"
+            className="topbar-brand flex items-center gap-3"
             data-testid="link-logo"
           >
             <img
               src={assetPath("/assets/media/medvade-logo-v2.png")}
               alt="medvade"
-              className="notranslate h-10 w-auto max-w-[190px] object-contain"
+              className="topbar-brand-logo notranslate h-10 w-auto max-w-[190px] object-contain"
             />
           </Link>
 
@@ -152,7 +149,7 @@ export default function SiteLayout({
             )}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="topbar-header-actions flex items-center gap-1.5 sm:gap-2">
             <button
               ref={searchButtonRef}
               type="button"
@@ -177,7 +174,9 @@ export default function SiteLayout({
               data-testid="button-language-toggle"
             >
               <Languages size={15} />
-              {language === "en" ? LANGUAGE_LABELS.ar : LANGUAGE_LABELS.en}
+              <span className="topbar-language-label">
+                {language === "en" ? LANGUAGE_LABELS.ar : LANGUAGE_LABELS.en}
+              </span>
             </button>
             <button
               type="button"

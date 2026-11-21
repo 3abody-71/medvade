@@ -168,9 +168,9 @@ function UkPathway() {
             </article>
           ))}
         </div>
-        <div className="mt-6 rounded-2xl border border-[#e5c992] bg-[#fffaf0] p-6">
+        <div className="mt-6 rounded-2xl border border-warning-border bg-warning-surface p-6">
           <div className="flex items-start gap-3">
-            <LockKeyhole size={18} className="mt-0.5 shrink-0 text-[#9a5b12]" />
+            <LockKeyhole size={18} className="mt-0.5 shrink-0 text-warning-foreground" />
             <p className="text-sm leading-6 text-muted-foreground">
               <strong className="text-foreground">Important:</strong> passing
               PLAB does not itself guarantee a job, a training number, or a
@@ -361,7 +361,7 @@ function UkPathway() {
             </p>
           </article>
         </div>
-        <div className="mt-7 rounded-2xl border border-[#d5e2f2] bg-[#f5f9ff] p-6 shadow-sm sm:p-7">
+        <div className="mt-7 rounded-2xl border border-info-border bg-info-surface p-6 shadow-sm sm:p-7">
           <div className="flex items-start gap-3">
             <Globe2 className="mt-0.5 shrink-0 text-primary" size={20} />
             <div>
@@ -386,7 +386,7 @@ function UkPathway() {
             {passportSteps.map(([title, body], index) => (
               <div
                 key={title}
-                className="relative rounded-xl border border-[#d5e2f2] bg-white/80 p-4"
+                className="relative rounded-xl border border-info-border bg-card/80 p-4"
               >
                 <div className="text-xs font-extrabold text-primary">
                   0{index + 1}
@@ -400,7 +400,7 @@ function UkPathway() {
               </div>
             ))}
           </div>
-          <div className="mt-5 flex flex-wrap gap-3 border-t border-[#d5e2f2] pt-4">
+          <div className="mt-5 flex flex-wrap gap-3 border-t border-info-border pt-4">
             <SourceLink
               label="Citizenship with ILR"
               url="https://www.gov.uk/apply-citizenship-indefinite-leave-to-remain"
@@ -424,16 +424,16 @@ function UkPathway() {
           body="There is no permanently easy specialty. Competition changes by recruitment round, geography, portfolio, immigration policy, and the number of posts. These categories are strategic patterns, not guarantees."
         />
         <div className="mt-5 grid gap-5 lg:grid-cols-2">
-          <article className="rounded-2xl border border-[#c9e6d3] bg-[#f5fff8] p-6">
+          <article className="rounded-2xl border border-success-border bg-success-surface p-6">
             <h3 className="flex items-center gap-2 text-lg font-extrabold">
-              <CheckCircle2 className="text-[#17834b]" size={19} /> Often more
+              <CheckCircle2 className="text-success-foreground" size={19} /> Often more
               accessible
             </h3>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               {friendly.map(item => (
                 <div
                   key={item}
-                  className="rounded-lg bg-white/75 p-3 text-sm font-semibold"
+                  className="rounded-lg bg-card/75 p-3 text-sm font-semibold"
                 >
                   {item}
                 </div>
@@ -444,16 +444,16 @@ function UkPathway() {
               good portfolio, and evidence that you understand the specialty.
             </p>
           </article>
-          <article className="rounded-2xl border border-[#edd1d1] bg-[#fff8f8] p-6">
+          <article className="rounded-2xl border border-error-border bg-error-surface p-6">
             <h3 className="flex items-center gap-2 text-lg font-extrabold">
-              <Trophy className="text-[#b52237]" size={19} /> Usually highly
+              <Trophy className="text-error-foreground" size={19} /> Usually highly
               competitive
             </h3>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               {competitive.map(item => (
                 <div
                   key={item}
-                  className="rounded-lg bg-white/80 p-3 text-sm font-semibold"
+                  className="rounded-lg bg-card/80 p-3 text-sm font-semibold"
                 >
                   {item}
                 </div>

@@ -270,7 +270,7 @@ function ArabicPathwaySummary({ countryId }: { countryId: string }) {
           {detail?.immigration}
         </p>
       </section>
-      <p className="mt-5 rounded-xl border border-[#e5c992] bg-[#fffaf0] p-4 text-sm leading-6 text-muted-foreground">
+      <p className="mt-5 rounded-xl border border-warning-border bg-warning-surface p-4 text-sm leading-6 text-muted-foreground">
         <strong className="text-foreground">ملاحظة مهمة: </strong>
         {pathway.note}
       </p>
@@ -330,7 +330,7 @@ export default function CountryDetail() {
             alt={displayName}
             className="h-full w-full object-cover"
           />
-          <span className="absolute left-4 top-4 rounded-lg bg-white/92 px-3 py-1.5 text-sm font-extrabold shadow-sm">
+          <span className="absolute left-4 top-4 rounded-lg bg-card/92 px-3 py-1.5 text-sm font-extrabold shadow-sm">
             {country.flag}
           </span>
         </div>
@@ -440,7 +440,7 @@ export default function CountryDetail() {
               <p className="mt-3 text-sm leading-6">
                 {country.citizenshipTimeline}
               </p>
-              <p className="mt-4 rounded-lg bg-white/60 p-3 text-xs leading-5 text-muted-foreground">
+              <p className="mt-4 rounded-lg bg-card/60 p-3 text-xs leading-5 text-muted-foreground">
                 {uiText(
                   isArabic,
                   "General orientation only. Eligibility, residence type, language, permanent residence, absences, and processing time matter. This is not legal advice.",

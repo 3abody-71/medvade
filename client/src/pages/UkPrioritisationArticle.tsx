@@ -144,9 +144,9 @@ export default function UkPrioritisationArticle() {
         </div>
       </header>
 
-      <div className="rounded-2xl border border-[#e5c992] bg-[#fffaf0] p-5 sm:p-6">
+      <div className="rounded-2xl border border-warning-border bg-warning-surface p-5 sm:p-6">
         <div className="flex items-start gap-3">
-          <Scale className="mt-0.5 shrink-0 text-[#9a5b12]" size={19} />
+          <Scale className="mt-0.5 shrink-0 text-warning-foreground" size={19} />
           <div>
             <h2 className="font-extrabold">
               {t("Quick answer", "الإجابة المختصرة")}
@@ -230,7 +230,7 @@ export default function UkPrioritisationArticle() {
             <div key={item} className="flex items-start gap-2.5">
               <CheckCircle2
                 size={15}
-                className="mt-1 shrink-0 text-[#267a5b]"
+                className="mt-1 shrink-0 text-success-foreground"
               />
               <span>{item}</span>
             </div>
@@ -353,7 +353,7 @@ export default function UkPrioritisationArticle() {
           plan is not confirmed, or your preferred specialty has very few posts
           and you have not yet built a competitive portfolio.
         </p>
-        <div className="mt-5 rounded-xl border border-[#d5e2f2] bg-[#f5f9ff] p-5">
+        <div className="mt-5 rounded-xl border border-info-border bg-info-surface p-5">
           <div className="flex items-start gap-3">
             <BriefcaseMedical
               className="mt-0.5 shrink-0 text-primary"
