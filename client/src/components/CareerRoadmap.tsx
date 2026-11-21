@@ -2,7 +2,6 @@ import { ArrowRight, MapPinned, ShieldCheck, Stethoscope } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { ROADMAP_COUNTRIES } from "../data/roadmapReadiness";
-import { assetPath } from "../lib/assetPath";
 
 export default function CareerRoadmap() {
   const { isArabic, profile } = useApp();
@@ -24,17 +23,6 @@ export default function CareerRoadmap() {
               ? "ابدأ هنا لاختيار وجهتك وتخصصك ودورتك."
               : "Start here to choose your destination, specialty, and cycle."}
           </p>
-        </div>
-        <div className="flex shrink-0 items-center gap-3 rounded-xl border border-border bg-card/75 px-3 py-2.5" aria-label={isArabic ? "مسار الولايات المتحدة" : "United States pathway example"}>
-          <img
-            src={assetPath("/assets/flags/roadmap/usa.png")}
-            alt={isArabic ? "علم الولايات المتحدة" : "United States flag"}
-            className="h-9 w-14 rounded-md border border-border object-cover shadow-sm"
-          />
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{isArabic ? "مثال وجهة" : "Example destination"}</p>
-            <p className="mt-0.5 text-xs font-extrabold">{isArabic ? "الولايات المتحدة" : "United States"}</p>
-          </div>
         </div>
       </div>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">

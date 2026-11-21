@@ -30,7 +30,7 @@ import CareerDashboard from "./CareerDashboard";
 import { assetPath } from "../lib/assetPath";
 
 const FLAG_IMAGES: Record<string, string> = {
-  usa: "/assets/flags/roadmap/usa.png",
+  usa: "/assets/flags/roadmap/usa-flag.png",
   uk: "/assets/flags/roadmap/uk.png",
   australia: "/assets/flags/roadmap/australia.png",
   canada: "/assets/flags/roadmap/canada.png",
