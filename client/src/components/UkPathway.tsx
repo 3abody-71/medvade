@@ -1,5 +1,4 @@
 import {
-  ArrowRight,
   ArrowUpRight,
   BadgeCheck,
   BookOpen,
@@ -12,342 +11,27 @@ import {
   Languages,
   LockKeyhole,
   PoundSterling,
-  Stethoscope,
-  TrainFront,
   Trophy,
 } from "lucide-react";
+import {
+  competitive,
+  examDetails,
+  friendly,
+  hospitals,
+  passportSteps,
+  reasons,
+  requirements,
+  salaries,
+  stages,
+  ukPageContents,
+} from "../data/ukPathway";
+import {
+  IconBox,
+  PathwayContents,
+  SectionHeading,
+  SourceLink,
+} from "./PathwayPrimitives";
 import { assetPath } from "../lib/assetPath";
-
-type Icon = typeof BadgeCheck;
-
-const reasons = [
-  {
-    title: "Organised training",
-    body: "The NHS uses a recognisable sequence: registration, service posts, foundation-equivalent experience, specialty recruitment, and certificate of completion of training (CCT).",
-    icon: TrainFront,
-  },
-  {
-    title: "English-language practice",
-    body: "Clinical work, teaching, documentation, and exams are conducted in English, so there is no second-language requirement like the German language pathway.",
-    icon: Languages,
-  },
-  {
-    title: "Portable training",
-    body: "GMC registration, NHS experience, and Royal College qualifications are widely understood by employers and training systems around the world.",
-    icon: Trophy,
-  },
-  {
-    title: "A more direct route than North America",
-    body: "For many IMGs, PLAB and GMC registration can lead to paid NHS work without the USMLE–residency match sequence or Canada’s province-specific IMG bottlenecks. It is easier in relative terms, not easy.",
-    icon: ArrowRight,
-  },
-];
-
-const requirements = [
-  {
-    title: "English evidence",
-    items: [
-      "IELTS Academic: normally 7.5 overall with at least 7.0 in each component.",
-      "OET Medicine: normally a B in each component; check the GMC’s current combination rules.",
-      "The GMC may also accept other evidence, such as a qualifying UK job offer or primary medical qualification, in defined circumstances.",
-    ],
-  },
-  {
-    title: "Primary qualification and verification",
-    items: [
-      "A primary medical qualification that meets GMC criteria.",
-      "Primary-source verification through the route required by the GMC/ECFMG before registration.",
-      "Passport, identity documents, certificates, translations, and a complete five-year activity history.",
-    ],
-  },
-  {
-    title: "Internship and professional standing",
-    items: [
-      "For full registration after PLAB, an acceptable internship is normally required; the GMC assesses its rotations and supervision.",
-      "Certificate of good standing from each relevant medical regulator.",
-      "Fitness-to-practise declarations and evidence of recent clinical work where required.",
-    ],
-  },
-  {
-    title: "Registration route",
-    items: [
-      "PLAB 1 and PLAB 2 are the common IMG route to full GMC registration.",
-      "An acceptable postgraduate qualification, including some Royal College qualifications such as MRCP (UK), may support another full-registration route.",
-      "Registration with a licence to practise is separate from immigration permission and employment eligibility.",
-    ],
-  },
-];
-
-const stages = [
-  [
-    "1",
-    "Confirm eligibility",
-    "Check your medical school, internship pattern, English evidence, passport, and primary-source verification requirements on the GMC website.",
-  ],
-  [
-    "2",
-    "Pass English and PLAB 1",
-    "PLAB 1 is a written single-best-answer examination. Prepare around UK clinical guidance, ethics, communication, and safe practice.",
-  ],
-  [
-    "3",
-    "Pass PLAB 2",
-    "PLAB 2 is a practical clinical and communication examination held in the UK. Plan travel, documentation, and a realistic revision schedule.",
-  ],
-  [
-    "4",
-    "Apply for GMC registration",
-    "After both parts and the remaining documents are ready, apply through GMC Online for full registration with a licence to practise.",
-  ],
-  [
-    "5",
-    "Get the first NHS job",
-    "Most IMGs begin in a locally employed doctor, trust-grade, clinical fellow, or specialty doctor role. Use NHS Jobs, BMJ Careers, and trust websites.",
-  ],
-  [
-    "6",
-    "Build the training portfolio",
-    "Collect NHS references, audits, quality-improvement work, teaching, courses, publications, and evidence of capability while learning the local system.",
-  ],
-  [
-    "7",
-    "Apply through Oriel",
-    "Apply for the specialty and region that fit your experience. Some programmes are run-through; others are uncoupled and involve core followed by higher specialty training.",
-  ],
-];
-
-const examDetails = [
-  {
-    name: "PLAB 1",
-    label: "Written licensing exam",
-    format:
-      "180 single-best-answer questions in 3 hours. Each question has five answer options and starts with a short clinical scenario.",
-    content:
-      "Tests the applied knowledge, clinical reasoning, ethics, communication, and safe-practice level expected of a doctor beginning the second year of the UK Foundation Programme (FY2).",
-    locations:
-      "Available in the UK and in a number of international countries. The GMC shows the current cities and dates inside GMC Online, so availability can change by diet.",
-    url: "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/plab/a-guide-to-the-plab-test",
-  },
-  {
-    name: "PLAB 2",
-    label: "Practical OSCE",
-    format:
-      "16 clinical scenarios, each lasting 8 minutes, designed to reflect real-life settings such as consultations and acute-ward encounters.",
-    content:
-      "Assesses clinical examination, communication, history-taking, explaining and planning management, professionalism, patient safety, and the ability to deal with difficult or urgent situations.",
-    locations:
-      "Held at the GMC clinical assessment centre in Manchester, United Kingdom. PLAB 2 is not offered overseas, so international candidates must plan travel and any required visitor permission.",
-    url: "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/plab/plab-2-guide",
-  },
-  {
-    name: "MRCP (UK) Part 1",
-    label: "Physician knowledge / written",
-    format:
-      "Two computer-based papers, 3 hours each, with 100 best-of-five questions per paper; 200 questions in total and no negative marking.",
-    content:
-      "Covers clinical sciences and common or important disorders across areas such as cardiology, respiratory, renal, neurology, infectious diseases, endocrinology, gastroenterology, rheumatology, haematology, and clinical pharmacology.",
-    locations:
-      "Computer-based at UK and international test centres. The Federation publishes the current centre list and may change delivery arrangements by exam diet.",
-    url: "https://www.thefederation.uk/examinations/part-1/format",
-  },
-  {
-    name: "MRCP (UK) Part 2 Written",
-    label: "Applied medicine / written",
-    format:
-      "Two computer-based papers, 3 hours each, with 100 best-of-five questions per paper; 200 questions in total and no negative marking.",
-    content:
-      "Questions may include clinical photographs, pathology, ECGs, X-rays, CT, MRI, echocardiograms, and investigation results. The focus is diagnosis, investigation, management, prognosis, and clinical problem-solving across the medical specialties.",
-    locations:
-      "Available at UK and international test centres listed by the Federation of the Royal Colleges of Physicians of the UK.",
-    url: "https://www.thefederation.uk/examinations/part-2/format",
-  },
-  {
-    name: "MRCP (UK) PACES",
-    label: "Clinical examination",
-    format:
-      "Five clinical stations, eight patient or surrogate encounters, and about 125 minutes including the changeover periods.",
-    content:
-      "Assesses physical examination, identifying signs, clinical communication, differential diagnosis, clinical judgement, managing patient concerns, and maintaining patient welfare. Encounters include communication, respiratory, cardiovascular, neurological, abdominal, and consultation stations.",
-    locations:
-      "Run in UK clinical centres and selected international centres, including locations across the Middle East, South Asia, Africa, Asia-Pacific, and the Caribbean. Places and centres vary by diet.",
-    url: "https://www.thefederation.uk/examinations/paces/format",
-  },
-];
-
-const passportSteps = [
-  [
-    "Start UK medical work",
-    "A GMC licence and an NHS job do not automatically create a route to citizenship. Most IMGs first hold a work visa such as Skilled Worker, subject to the rules in force.",
-  ],
-  [
-    "Usually around 5 years",
-    "If eligible, a qualifying work route may lead to indefinite leave to remain (ILR) after the required qualifying residence period. This is not automatic: salary, sponsorship, continuous residence, absences, English, and other requirements can matter.",
-  ],
-  [
-    "After ILR",
-    "For the standard naturalisation route, GOV.UK normally requires 5 years of UK residence and 12 months holding ILR or settled status. You usually need the Life in the UK Test, English-language evidence, good character, and the required residence and absence limits.",
-  ],
-  [
-    "Citizenship decision",
-    "A naturalisation application usually receives a decision within 6 months, although some cases take longer. Approval is followed by a citizenship ceremony and a certificate of naturalisation.",
-  ],
-  [
-    "British passport",
-    "Citizenship and a passport are separate. After receiving the naturalisation certificate, apply for the first British passport. HM Passport Office says you will usually receive it within 3 weeks after it receives the required documents, although cases needing more information can take longer.",
-  ],
-];
-
-const salaries = [
-  [
-    "Foundation training",
-    "£41,226–£47,610",
-    "Basic salary range in England from 1 April 2026; nights, weekends, on-call, and other supplements can increase total pay.",
-  ],
-  [
-    "Specialist training",
-    "£55,355–£77,348",
-    "Basic salary range in England from 1 April 2026 for doctors in specialist training.",
-  ],
-  [
-    "Specialty doctor",
-    "£63,696–£102,689",
-    "Basic salary range in England from 1 April 2026; grade, experience, duties, and supplements matter.",
-  ],
-  [
-    "Consultant",
-    "£113,565–£150,569",
-    "Basic salary range in England from 1 April 2026, before extra responsibilities or private work.",
-  ],
-];
-
-const friendly = [
-  "General Practice",
-  "Psychiatry",
-  "Internal Medicine / Acute Medicine",
-  "Geriatric Medicine",
-  "Emergency Medicine",
-  "Histopathology and other pathology routes",
-];
-const competitive = [
-  "Neurosurgery",
-  "Cardiothoracic Surgery",
-  "Plastic Surgery",
-  "Dermatology",
-  "Ophthalmology",
-  "ENT",
-  "Paediatric Surgery",
-  "Orthopaedic Surgery",
-];
-
-const hospitals = [
-  {
-    name: "Guy’s and St Thomas’ NHS Foundation Trust",
-    city: "London",
-    body: "Large teaching trust with major tertiary, specialist, and academic services.",
-    image: "/assets/uk/hospitals/guys-hospital.jpg",
-    url: "https://www.guysandstthomas.nhs.uk/",
-  },
-  {
-    name: "University College London Hospitals (UCLH)",
-    city: "London",
-    body: "Academic centre known for complex medicine, surgery, cancer, and research.",
-    image: "/assets/uk/hospitals/uclh.jpg",
-    url: "https://www.uclh.nhs.uk/",
-  },
-  {
-    name: "Imperial College Healthcare NHS Trust",
-    city: "London",
-    body: "Major teaching trust linked to Imperial College London and specialist hospitals.",
-    image: "/assets/uk/hospitals/imperial-st-marys.jpg",
-    url: "https://www.imperial.nhs.uk/",
-  },
-  {
-    name: "King’s College Hospital NHS Foundation Trust",
-    city: "London",
-    body: "Tertiary centre with strong liver, neurosciences, maternity, and trauma services.",
-    image: "/assets/uk/hospitals/kings-college.jpg",
-    url: "https://www.kch.nhs.uk/",
-  },
-  {
-    name: "Oxford University Hospitals NHS Foundation Trust",
-    city: "Oxford",
-    body: "University hospital group with broad tertiary care and research exposure.",
-    image: "/assets/uk/hospitals/oxford.jpg",
-    url: "https://www.ouh.nhs.uk/",
-  },
-  {
-    name: "Cambridge University Hospitals NHS Foundation Trust",
-    city: "Cambridge",
-    body: "Academic centre including Addenbrooke’s Hospital and specialist services.",
-    image: "/assets/uk/hospitals/cambridge.jpg",
-    url: "https://www.cuh.nhs.uk/",
-  },
-  {
-    name: "Manchester University NHS Foundation Trust",
-    city: "Manchester",
-    body: "One of the UK’s largest trusts, spanning major adult and paediatric services.",
-    image: "/assets/uk/hospitals/manchester.jpg",
-    url: "https://mft.nhs.uk/",
-  },
-  {
-    name: "University Hospitals Birmingham NHS Foundation Trust",
-    city: "Birmingham",
-    body: "Large multi-site teaching trust including Queen Elizabeth Hospital Birmingham.",
-    image: "/assets/uk/hospitals/birmingham.jpg",
-    url: "https://www.uhb.nhs.uk/",
-  },
-  {
-    name: "University Hospitals Bristol and Weston NHS Foundation Trust",
-    city: "Bristol / Weston",
-    body: "Teaching trust with regional specialist, cardiac, paediatric, and surgical services.",
-    image: "/assets/uk/hospitals/bristol.jpg",
-    url: "https://www.uhbw.nhs.uk/",
-  },
-];
-
-function SectionHeading({
-  eyebrow,
-  title,
-  body,
-}: {
-  eyebrow: string;
-  title: string;
-  body?: string;
-}) {
-  return (
-    <div className="max-w-3xl">
-      <div className="eyebrow">{eyebrow}</div>
-      <h2 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">
-        {title}
-      </h2>
-      {body && (
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p>
-      )}
-    </div>
-  );
-}
-
-function IconBox({ icon: Icon }: { icon: Icon }) {
-  return (
-    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-      <Icon size={19} />
-    </div>
-  );
-}
-
-function SourceLink({ label, url }: { label: string; url: string }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
-    >
-      {label}
-      <ArrowUpRight size={13} />
-    </a>
-  );
-}
 
 function UkPathway() {
   return (
@@ -379,29 +63,10 @@ function UkPathway() {
             <h2 className="mt-2 text-xl font-extrabold">
               What is on this page?
             </h2>
-            <nav
-              className="mt-4 grid gap-2 text-sm"
-              aria-label="UK guide contents"
-            >
-              {[
-                ["why-uk", "Why choose the UK?"],
-                ["requirements-uk", "IMG requirements"],
-                ["pathway-uk", "PLAB, MRCP, and pathway"],
-                ["life-uk", "Salaries and work-life"],
-                ["specialties-uk", "Specialty difficulty"],
-                ["hospitals-uk", "Nine important hospitals"],
-                ["passport-uk", "Passport and settlement"],
-              ].map(([href, label]) => (
-                <a
-                  key={href}
-                  href={`#${href}`}
-                  className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2.5 font-bold hover:border-primary/40 hover:bg-secondary/50"
-                >
-                  <span>{label}</span>
-                  <ArrowRight size={14} className="text-primary" />
-                </a>
-              ))}
-            </nav>
+            <PathwayContents
+              ariaLabel="UK guide contents"
+              items={ukPageContents}
+            />
           </div>
         </div>
         <div className="grid gap-4 border-t border-border bg-secondary/30 p-4 sm:grid-cols-[1fr_1.25fr] sm:p-5">
@@ -903,96 +568,5 @@ function UkPathway() {
     </div>
   );
 }
-
-export { Stethoscope };
-
-// This guide is educational orientation, not medical, immigration, employment, or legal advice.
-// Rules, salaries, exam formats, and recruitment priorities can change; verify each item with the relevant authority before applying.
-
-export const ukPathwayMeta = {
-  title: "The UK pathway for international medical graduates",
-  updated: "August 2026",
-};
-
-export const ukPathwayIcon = Stethoscope;
-
-export const ukPathwayNote =
-  "An AI-authored orientation guide; check current GMC, NHS, Oriel, Royal College, and Home Office guidance before acting.";
-
-export const ukPathwayComponents = { SectionHeading, IconBox, SourceLink };
-
-export const ukPathwayVersion = 2;
-
-export const ukPathwayFlags = {
-  includesPlab: true,
-  includesMrcp: true,
-  includesHospitals: true,
-};
-
-export const ukPathwayAudience =
-  "International medical graduates researching UK registration and training.";
-
-export const ukPathwayDisclaimer =
-  "This content is general information and not professional medical, legal, immigration, or employment advice.";
-
-export const ukPathwaySources = [
-  "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/registration-applications/application-guides/full-registration-for-international-medical-graduates",
-  "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/before-you-apply-guide-for-doctors/evidence-of-your-knowledge-of-english",
-  "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/before-you-apply-guide-for-doctors/acceptable-postgraduate-qualifications",
-  "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/before-you-apply-guide-for-doctors/check-if-your-practical-training-internship-is-acceptable",
-  "https://www.healthcareers.nhs.uk/explore-roles/doctors/pay-doctors",
-  "https://www.gov.uk/british-citizenship",
-  "https://www.gmc-uk.org/registration-and-licensing/join-our-registers/plab/a-guide-to-the-plab-test",
-  "https://www.thefederation.uk/examinations/part-1/format",
-  "https://www.thefederation.uk/examinations/part-2/format",
-  "https://www.thefederation.uk/examinations/paces/format",
-  "https://www.thefederation.uk/examinations/part-1/uk-and-international-centres",
-  "https://www.thefederation.uk/examinations/paces/centre-locations",
-  "https://www.gov.uk/apply-citizenship-indefinite-leave-to-remain",
-  "https://www.gov.uk/apply-first-adult-passport",
-  "https://www.gov.uk/government/organisations/hm-passport-office/about/about-our-services",
-];
-
-export const ukPathwayData = {
-  reasons,
-  requirements,
-  stages,
-  salaries,
-  friendly,
-  competitive,
-  hospitals,
-};
-
-export const ukPathwayBadge = "UK / IMG";
-
-export const ukPathwayStatus = "published";
-
-export const ukPathwaySections = [
-  "why-uk",
-  "requirements-uk",
-  "pathway-uk",
-  "life-uk",
-  "specialties-uk",
-  "hospitals-uk",
-  "passport-uk",
-];
-
-export const ukPathwayDescription =
-  "A nationally coordinated route through GMC registration, PLAB, NHS work, specialty training, salary, lifestyle, settlement, and major hospitals.";
-
-export const ukPathwayLastReviewed = "2026-08-29";
-
-export const ukPathwayHasGif = false;
-
-export const ukPathwayImage = "/assets/uk/uk-reaction-london.jpg";
-
-export const ukPathwayCountryId = "uk";
-
-export const ukPathwayLanguage = "English";
-
-export const ukPathwayLicenseNote =
-  "The UK guide uses the user-supplied London skyline photo in the reaction-panel position.";
-
-export const ukPathwayEnd = true;
 
 export default UkPathway;

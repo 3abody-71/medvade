@@ -493,3 +493,28 @@ export const canadaPathway = {
     },
   ],
 } as const;
+
+export const canadaPageContents = [
+  { href: "why-canada", label: "Why choose Canada?" },
+  { href: "requirements-canada", label: "IMG requirements" },
+  { href: "pathway-canada", label: "Pathway, exams, and costs" },
+  { href: "life-canada", label: "Salaries and work-life" },
+  { href: "visas-canada", label: "Visas and immigration" },
+  { href: "tradeoffs-canada", label: "Advantages and disadvantages" },
+  { href: "hospitals-canada", label: "Nine important hospitals" },
+];
+
+export const canadaProvinceChecklist = [
+  "Read the current provincial criteria",
+  "Confirm the regulator’s written checklist",
+  "Ask exactly what work permission and supervision apply",
+];
+
+export const canadaBeforeApplyChecklist = [
+  "Confirm the provincial regulator and exact permitted role",
+  "Match the work permit to the named employer or route",
+  "Check whether a job offer or provincial support is required",
+  "Keep immigration documents, medical documents, and translations current",
+  "Do not begin patient-facing practice before the permitted licence date",
+  "Recheck Express Entry and provincial criteria before filing",
+];

@@ -23,8 +23,20 @@ import {
   Users,
   WalletCards,
 } from "lucide-react";
-import { canadaPathway, type CanadaIconName } from "../data/canadaPathway";
+import {
+  canadaBeforeApplyChecklist,
+  canadaPageContents,
+  canadaPathway,
+  canadaProvinceChecklist,
+  type CanadaIconName,
+} from "../data/canadaPathway";
 import { assetPath } from "../lib/assetPath";
+import {
+  IconBox as SharedIconBox,
+  PathwayContents,
+  SectionHeading,
+  SourceLink,
+} from "./PathwayPrimitives";
 
 const ICONS: Record<CanadaIconName, typeof BadgeCheck> = {
   alert: AlertTriangle,
@@ -49,28 +61,6 @@ const ICONS: Record<CanadaIconName, typeof BadgeCheck> = {
   wallet: WalletCards,
 };
 
-function SectionHeading({
-  eyebrow,
-  title,
-  body,
-}: {
-  eyebrow: string;
-  title: string;
-  body?: string;
-}) {
-  return (
-    <div className="max-w-3xl">
-      <div className="eyebrow">{eyebrow}</div>
-      <h2 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">
-        {title}
-      </h2>
-      {body ? (
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p>
-      ) : null}
-    </div>
-  );
-}
-
 function IconBox({
   name,
   className = "",
@@ -79,13 +69,7 @@ function IconBox({
   className?: string;
 }) {
   const Icon = ICONS[name];
-  return (
-    <div
-      className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary ${className}`}
-    >
-      <Icon size={19} />
-    </div>
-  );
+  return <SharedIconBox icon={Icon} className={className} />;
 }
 
 function SafeImage({
@@ -108,19 +92,6 @@ function SafeImage({
       className={className}
       onError={() => setCurrentSrc("/assets/canada/canada-flag-snow.jpg")}
     />
-  );
-}
-
-function SourceLink({ label, url }: { label: string; url: string }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
-    >
-      {label} <ArrowUpRight size={13} />
-    </a>
   );
 }
 
@@ -156,29 +127,10 @@ export default function CanadaPathway() {
             <h2 className="mt-2 text-xl font-extrabold">
               What is on this page?
             </h2>
-            <nav
-              className="mt-4 grid gap-2 text-sm"
-              aria-label="Canada guide contents"
-            >
-              {[
-                ["why-canada", "Why choose Canada?"],
-                ["requirements-canada", "IMG requirements"],
-                ["pathway-canada", "Pathway, exams, and costs"],
-                ["life-canada", "Salaries and work-life"],
-                ["visas-canada", "Visas and immigration"],
-                ["tradeoffs-canada", "Advantages and disadvantages"],
-                ["hospitals-canada", "Nine important hospitals"],
-              ].map(([href, label]) => (
-                <a
-                  key={href}
-                  href={`#${href}`}
-                  className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2.5 font-bold hover:border-primary/40 hover:bg-secondary/50"
-                >
-                  <span>{label}</span>
-                  <ArrowRight size={14} className="text-primary" />
-                </a>
-              ))}
-            </nav>
+            <PathwayContents
+              ariaLabel="Canada guide contents"
+              items={canadaPageContents}
+            />
           </div>
         </div>
         <div className="grid gap-4 border-t border-border bg-secondary/30 p-4 sm:grid-cols-[1fr_1.25fr] sm:p-5">
@@ -371,11 +323,7 @@ export default function CanadaPathway() {
               separately.
             </p>
             <div className="mt-5 space-y-3">
-              {[
-                "Read the current provincial criteria",
-                "Confirm the regulator’s written checklist",
-                "Ask exactly what work permission and supervision apply",
-              ].map(item => (
+              {canadaProvinceChecklist.map(item => (
                 <div
                   key={item}
                   className="flex items-start gap-2 text-xs leading-5 text-white/90"
@@ -402,11 +350,17 @@ export default function CanadaPathway() {
                 translations, travel, provincial registration, and application
                 costs change. Check the current official fee before paying.
               </p>
-              <div className="pathway-costs-table mt-5 min-w-0 max-w-full overflow-hidden rounded-xl border border-[#efd7d8] bg-white" role="region" aria-label="Canada pathway costs table">
+              <div
+                className="pathway-costs-table mt-5 min-w-0 max-w-full overflow-hidden rounded-xl border border-[#efd7d8] bg-white"
+                role="region"
+                aria-label="Canada pathway costs table"
+              >
                 <table className="w-full table-fixed text-left text-sm">
                   <thead className="bg-[#fff0f1] text-xs uppercase tracking-wider text-[#8e3541]">
                     <tr>
-                      <th className="w-[29%] break-words px-2 py-2 text-[10px] leading-4 font-extrabold sm:px-4 sm:py-3 sm:text-xs">Item</th>
+                      <th className="w-[29%] break-words px-2 py-2 text-[10px] leading-4 font-extrabold sm:px-4 sm:py-3 sm:text-xs">
+                        Item
+                      </th>
                       <th className="w-[25%] break-words px-2 py-2 text-[10px] leading-4 font-extrabold sm:px-4 sm:py-3 sm:text-xs">
                         Planning amount
                       </th>
@@ -421,7 +375,9 @@ export default function CanadaPathway() {
                         key={cost.item}
                         className="border-t border-[#f1e3e4] align-top"
                       >
-                        <td className="break-words px-2 py-2 text-[11px] leading-4 font-bold sm:px-4 sm:py-3 sm:text-sm">{cost.item}</td>
+                        <td className="break-words px-2 py-2 text-[11px] leading-4 font-bold sm:px-4 sm:py-3 sm:text-sm">
+                          {cost.item}
+                        </td>
                         <td className="break-words px-2 py-2 text-[11px] leading-4 font-extrabold text-[#a52b3b] sm:px-4 sm:py-3 sm:text-sm">
                           {cost.amount}
                         </td>
@@ -433,14 +389,26 @@ export default function CanadaPathway() {
                   </tbody>
                 </table>
               </div>
-              <div className="pathway-costs-cards mt-5 space-y-3" aria-label="Canada pathway costs">
+              <div
+                className="pathway-costs-cards mt-5 space-y-3"
+                aria-label="Canada pathway costs"
+              >
                 {canadaPathway.costItems.map(cost => (
-                  <article key={cost.item} className="rounded-xl border border-[#efd7d8] bg-white p-4">
+                  <article
+                    key={cost.item}
+                    className="rounded-xl border border-[#efd7d8] bg-white p-4"
+                  >
                     <div className="flex items-start justify-between gap-3">
-                      <h4 className="text-sm font-extrabold text-[#6d2430]">{cost.item}</h4>
-                      <span className="shrink-0 text-sm font-extrabold text-[#a52b3b]">{cost.amount}</span>
+                      <h4 className="text-sm font-extrabold text-[#6d2430]">
+                        {cost.item}
+                      </h4>
+                      <span className="shrink-0 text-sm font-extrabold text-[#a52b3b]">
+                        {cost.amount}
+                      </span>
                     </div>
-                    <p className="mt-2 text-xs leading-5 text-muted-foreground">{cost.note}</p>
+                    <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                      {cost.note}
+                    </p>
                   </article>
                 ))}
               </div>
@@ -488,7 +456,12 @@ export default function CanadaPathway() {
           id="life-canada-heading"
           className="mt-5 min-w-0 overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
         >
-          <div className="responsive-table min-w-0 max-w-full overflow-x-auto" tabIndex={0} role="region" aria-label="Canada salary table by role">
+          <div
+            className="responsive-table min-w-0 max-w-full overflow-x-auto"
+            tabIndex={0}
+            role="region"
+            aria-label="Canada salary table by role"
+          >
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="bg-secondary/70 text-xs uppercase tracking-wider text-muted-foreground">
                 <tr>
@@ -619,14 +592,7 @@ export default function CanadaPathway() {
             <div>
               <h3 className="text-lg font-extrabold">Before you apply</h3>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {[
-                  "Confirm the provincial regulator and exact permitted role",
-                  "Match the work permit to the named employer or route",
-                  "Check whether a job offer or provincial support is required",
-                  "Keep immigration documents, medical documents, and translations current",
-                  "Do not begin patient-facing practice before the permitted licence date",
-                  "Recheck Express Entry and provincial criteria before filing",
-                ].map(item => (
+                {canadaBeforeApplyChecklist.map(item => (
                   <div
                     key={item}
                     className="flex items-start gap-2 text-sm leading-6 text-muted-foreground"
