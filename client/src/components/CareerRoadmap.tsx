@@ -14,15 +14,15 @@ export default function CareerRoadmap() {
         <div className="career-roadmap-intro-number" aria-hidden="true">01</div>
         <div className="min-w-0 flex-1">
           <div className="eyebrow">
-            {isArabic ? "الخطوة الأولى · ابدأ من هنا" : "First step · Start here"}
+            {isArabic ? "الخطوة الأولى" : "First step"}
           </div>
           <p className="mt-2 text-lg font-extrabold tracking-tight sm:text-xl">
-            {isArabic ? "ابدأ بخريطة مسارك المهني الشخصية" : "Start with your Personal Career Roadmap"}
+            {isArabic ? "خريطة مسارك المهني الشخصية هي خطوتك الأولى" : "Personal Career Roadmap is your first step"}
           </p>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {isArabic
-              ? "هذه هي الخطوة الأولى لاستخدام medvade. اختر وجهتك وتخصصك ودورتك لتفهم المتطلبات وتعرف ما الذي تستعد له بعد ذلك."
-              : "This is the first step to use medvade. Choose your destination, specialty, and cycle to understand the requirements and see what to prepare next."}
+              ? "ابدأ هنا لاختيار وجهتك وتخصصك ودورتك."
+              : "Start here to choose your destination, specialty, and cycle."}
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-3 rounded-xl border border-border bg-card/75 px-3 py-2.5" aria-label={isArabic ? "مسار الولايات المتحدة" : "United States pathway example"}>
