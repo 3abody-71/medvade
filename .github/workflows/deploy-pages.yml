@@ -39,7 +39,25 @@ jobs:
       - name: Build static website
         run: |
           pnpm exec vite build
-          cp dist/public/index.html dist/public/404.html
+          repo_name="${GITHUB_REPOSITORY#*/}"
+          cat > dist/public/404.html <<EOF
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="robots" content="noindex" />
+              <title>Redirecting…</title>
+              <script>
+                (function () {
+                  var base = "/${repo_name}/";
+                  var route = window.location.pathname + window.location.search + window.location.hash;
+                  window.location.replace(base + "?__spa_path=" + encodeURIComponent(route));
+                })();
+              </script>
+            </head>
+            <body><p>Redirecting…</p></body>
+          </html>
+          EOF
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

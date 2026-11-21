@@ -13,6 +13,17 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <script>
+      // GitHub Pages serves 404.html for client-side routes. Restore the original
+      // URL before React Router starts, including query strings and hash callbacks.
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var route = params.get("__spa_path");
+        if (route) {
+          window.history.replaceState(null, "", route);
+        }
+      })();
+    </script>
     <meta property="og:title" content="medvade — Country pathways for medical graduates" />
     <meta
       property="og:description"
