@@ -96,98 +96,14 @@ export default function SiteLayout({
     setMobileOpen(false);
   }, [location]);
 
-  useEffect(() => {
-    const elementId = "google_translate_element";
-    if (document.getElementById(elementId)) return;
-
-    const element = document.createElement("div");
-    element.id = elementId;
-    element.className = "notranslate";
-    element.style.position = "fixed";
-    element.style.left = "-10000px";
-    element.style.top = "-10000px";
-    element.style.width = "1px";
-    element.style.height = "1px";
-    element.style.overflow = "hidden";
-    document.body.appendChild(element);
-
-    const globalWindow = window as typeof window & {
-      googleTranslateElementInit?: () => void;
-      google?: {
-        translate?: {
-          TranslateElement?: new (
-            options: Record<string, unknown>,
-            id: string
-          ) => unknown;
-        };
-      };
-    };
-    globalWindow.googleTranslateElementInit = () => {
-      const TranslateElement = globalWindow.google?.translate?.TranslateElement;
-      if (TranslateElement) {
-        new TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages: "ar,en",
-            autoDisplay: false,
-          },
-          elementId
-        );
-      }
-    };
-
-    const script = document.createElement("script");
-    script.src =
-      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      script.remove();
-      element.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isArabic) return;
-    const key = "medvade-translated-path";
-    if (sessionStorage.getItem(key) === location.pathname) return;
-    sessionStorage.setItem(key, location.pathname);
-    window.location.reload();
-  }, [isArabic, location.pathname]);
-
   const isActive = (path: string) =>
     path === "/"
       ? location.pathname === "/"
       : location.pathname.startsWith(path);
 
-  const resetGoogleTranslate = () => {
-    const expired = "expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    const hostname = window.location.hostname;
-    const domains = ["", `domain=${hostname}`, `domain=.${hostname}`];
-
-    domains.forEach((domain) => {
-      const suffix = domain ? `; ${domain}` : "";
-      document.cookie = `googtrans=; ${expired}; path=/${suffix}`;
-    });
-
-    // Google Translate may recreate a host-scoped cookie while its script is
-    // still unloading. Keep the page explicitly on English during the reload.
-    document.cookie = `googtrans=/en/en; path=/`;
-    document.cookie = `googtrans=/en/en; path=/; domain=${hostname}`;
-    document.cookie = `googtrans=/en/en; path=/; domain=.${hostname}`;
-  };
-
   const changeLanguage = (nextLanguage: "en" | "ar") => {
-    if (nextLanguage === "ar") {
-      document.cookie = "googtrans=/en/ar; path=/";
-    } else {
-      resetGoogleTranslate();
-    }
     localStorage.setItem("medvade-language", nextLanguage);
-    sessionStorage.removeItem("medvade-translated-path");
     setLanguage(nextLanguage);
-    window.location.reload();
   };
 
   return (

@@ -166,13 +166,7 @@ function loadJson<T>(key: string, fallback: T): T {
 
 function loadLanguage(): Language {
   const storedLanguage = localStorage.getItem("medvade-language");
-  const googleLanguage = document.cookie.match(
-    /(?:^|;\s*)googtrans=\/en\/(ar|en)/
-  )?.[1];
-  return storedLanguage === "ar" ||
-    (storedLanguage !== "ar" && googleLanguage === "ar")
-    ? "ar"
-    : "en";
+  return storedLanguage === "ar" ? "ar" : "en";
 }
 
 function localSnapshot(
