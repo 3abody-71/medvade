@@ -4,6 +4,8 @@ import {
   ArrowRight,
   CheckCircle2,
   ExternalLink,
+  Download,
+  LoaderCircle,
   LockKeyhole,
   RotateCcw,
   Save,
@@ -28,6 +30,7 @@ import {
 } from "../data/roadmapReadiness";
 import CareerDashboard from "./CareerDashboard";
 import { assetPath } from "../lib/assetPath";
+import { countryName, uiText } from "../lib/i18n";
 
 const FLAG_IMAGES: Record<string, string> = {
   usa: "/assets/flags/roadmap/usa-flag.png",
@@ -191,7 +194,7 @@ function QuestionCard({
 }
 
 export default function Roadmap() {
-  const { profile, setProfile } = useApp();
+  const { profile, setProfile, isArabic } = useApp();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [countryId, setCountryId] = useState(
@@ -204,6 +207,7 @@ export default function Roadmap() {
   );
   const [resultShown, setResultShown] = useState(false);
   const [savedNotice, setSavedNotice] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const country = ROADMAP_COUNTRIES.find(item => item.id === countryId);
   const answers = useMemo(() => {
     if (!country) return {};
@@ -217,6 +221,46 @@ export default function Roadmap() {
   const result = country ? calculateRoadmap(country, answers) : null;
   const savedResult = country ? profile.roadmapResults[country.id] : undefined;
   const nextGap = result?.gaps[0];
+
+  const exportRoadmap = async () => {
+    if (!country || isExporting) return;
+    setIsExporting(true);
+    try {
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+      if (document.fonts?.ready) await document.fonts.ready;
+      const finish = () => setIsExporting(false);
+      window.addEventListener("afterprint", finish, { once: true });
+      window.print();
+      // Some embedded browsers do not dispatch afterprint when the dialog is dismissed.
+      window.setTimeout(finish, 120_000);
+    } catch {
+      setIsExporting(false);
+      window.alert(
+        uiText(isArabic, "The roadmap could not be prepared for printing. Please try again.", "تعذر إعداد خريطة المسار للطباعة. يرجى المحاولة مرة أخرى.")
+      );
+    }
+  };
+
+  const exportAnswers = country?.questions.map(question => {
+    const raw = answers[question.key] || "";
+    const score = questionScore(question, raw);
+    const displayAnswer = raw
+      ? question.type === "number"
+        ? raw
+        : question.choices?.find(choice => choice.value === raw)?.label || raw
+      : "";
+    return {
+      question,
+      raw,
+      displayAnswer,
+      completed: score >= 0.99,
+      inProgress: score > 0 && score < 0.99,
+    };
+  }) ?? [];
+  const exportGaps = result?.gaps ?? [];
+  const exportDate = new Intl.DateTimeFormat(isArabic ? "ar" : "en", {
+    dateStyle: "long",
+  }).format(new Date());
 
   const updateAnswer = (question: RoadmapQuestion, value: string) => {
     if (!country) return;
@@ -277,13 +321,102 @@ export default function Roadmap() {
             identify your gaps, and build your personalized preparation plan.
           </p>
         </div>
-        <Link
-          to="/"
-          className="btn-quiet inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold"
-        >
-          <ArrowLeft size={14} /> Back home
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          {country && (
+            <button
+              type="button"
+              onClick={() => void exportRoadmap()}
+              disabled={isExporting}
+              className="btn-primary inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-extrabold disabled:cursor-wait disabled:opacity-70"
+              aria-live="polite"
+            >
+              {isExporting ? <LoaderCircle size={14} className="animate-spin" /> : <Download size={14} />}
+              {isExporting
+                ? uiText(isArabic, "Preparing PDF…", "جارٍ إعداد ملف PDF…")
+                : uiText(isArabic, "Export PDF", "تصدير PDF")}
+            </button>
+          )}
+          <Link
+            to="/"
+            className="btn-quiet inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold"
+          >
+            <ArrowLeft size={14} /> {uiText(isArabic, "Back home", "العودة للرئيسية")}
+          </Link>
+        </div>
       </div>
+
+      {country && (
+        <article
+          id="roadmap-export"
+          className="roadmap-export-document"
+          dir={isArabic ? "rtl" : "ltr"}
+          lang={isArabic ? "ar" : "en"}
+        >
+          <header className="export-brand">
+            <div className="export-wordmark"><span className="export-mark">M</span> MedVade</div>
+            <div className="export-date">{uiText(isArabic, "Exported", "تاريخ التصدير")}: {exportDate}</div>
+          </header>
+          <h1>{uiText(isArabic, "Personal Career Roadmap", "خريطة المسار المهني الشخصية")}</h1>
+          <p className="export-subtitle">{uiText(isArabic, "A personalized overview of your selected destination, assessment answers, and next steps.", "ملخص مخصص لوجهتك المختارة وإجابات التقييم والخطوات التالية.")}</p>
+
+          <section className="export-summary">
+            <h2>{uiText(isArabic, "Your pathway", "مسارك المهني")}</h2>
+            <dl>
+              <div><dt>{uiText(isArabic, "Destination", "الوجهة")}</dt><dd>{countryName(country.id, country.name, isArabic)}</dd></div>
+              {profile.targetSpecialty.trim() && <div><dt>{uiText(isArabic, "Specialty", "التخصص")}</dt><dd>{profile.targetSpecialty}</dd></div>}
+              {profile.graduationStatus && <div><dt>{uiText(isArabic, "Current career stage", "المرحلة المهنية الحالية")}</dt><dd>{profile.graduationStatus}</dd></div>}
+              {profile.residencyCycle.trim() && <div><dt>{uiText(isArabic, "Target cycle", "دورة التقديم المستهدفة")}</dt><dd>{profile.residencyCycle}</dd></div>}
+              {result && <div><dt>{uiText(isArabic, "Preparation score", "نتيجة الاستعداد")}</dt><dd>{result.percentage}% · {result.gatesMet}/{result.gatesTotal} {uiText(isArabic, "eligibility gates met", "بوابات أهلية مستوفاة")}</dd></div>}
+            </dl>
+          </section>
+
+          <section className="export-section">
+            <h2>{uiText(isArabic, "Assessment steps", "خطوات التقييم")}</h2>
+            <ol className="export-steps">
+              {exportAnswers.map(({ question, displayAnswer, completed, inProgress }) => (
+                <li key={question.key} className="export-step">
+                  <div className="export-step-heading">
+                    <strong>{question.label}</strong>
+                    <span className={`export-status ${completed ? "done" : inProgress ? "progress" : "todo"}`}>
+                      {completed
+                        ? uiText(isArabic, "Completed", "مكتمل")
+                        : inProgress
+                          ? uiText(isArabic, "In progress", "قيد الإنجاز")
+                          : uiText(isArabic, "Incomplete", "غير مكتمل")}
+                    </span>
+                  </div>
+                  {displayAnswer && <p><b>{uiText(isArabic, "Your answer", "إجابتك")}:</b> {displayAnswer}</p>}
+                  {question.advice && !completed && <p className="export-advice">{question.advice}</p>}
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {exportGaps.length > 0 && (
+            <section className="export-section">
+              <h2>{uiText(isArabic, "Recommended next actions", "الخطوات التالية المقترحة")}</h2>
+              <ol className="export-recommendations">
+                {exportGaps.map(gap => (
+                  <li key={gap.question.key}>
+                    <strong>{gap.question.label}: </strong>
+                    {gap.question.type === "number"
+                      ? `${uiText(isArabic, "Reach", "الوصول إلى")} ${gap.target}`
+                      : `${uiText(isArabic, "Target", "الهدف")}: ${gap.target}`}
+                    {gap.question.advice && <p>{gap.question.advice}</p>}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+          {exportGaps.length === 0 && result && (
+            <section className="export-section">
+              <h2>{uiText(isArabic, "Recommended next action", "الخطوة التالية المقترحة")}</h2>
+              <p>{uiText(isArabic, "Verify the requirements with your named target programme before relying on this result.", "تحقق من المتطلبات لدى البرنامج المستهدف قبل الاعتماد على هذه النتيجة.")}</p>
+            </section>
+          )}
+          <footer className="export-footer">MedVade · {uiText(isArabic, "Personal Career Roadmap", "خريطة المسار المهني الشخصية")}</footer>
+        </article>
+      )}
 
       <div className="mt-8 grid gap-2 sm:grid-cols-3">
         {["Build your profile", "Complete assessment", "Review your plan"].map(

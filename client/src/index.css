@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Lora:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Lora:wght@600&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -103,6 +103,9 @@ iframe.goog-te-banner-frame {
 }
 
 html[lang="ar"] body {
+  font-family: "Noto Sans Arabic", "Geeza Pro", Tahoma, Arial, sans-serif;
+}
+html[lang="ar"] #roadmap-export {
   font-family: "Noto Sans Arabic", "Geeza Pro", Tahoma, Arial, sans-serif;
 }
 
@@ -1574,4 +1577,65 @@ button:disabled {
   .community-feed-toolbar { padding: .85rem; }
   .community-post-card { padding: 1rem; }
   .community-feed-meta { margin: .55rem 0; }
+}
+
+/* Dedicated print document: only the user's selected roadmap is visible. */
+.roadmap-export-document {
+  position: fixed;
+  top: 0;
+  left: -10000px;
+  width: 780px;
+  padding: 40px;
+  color: #172b3b;
+  background: #fff;
+  font: 11pt/1.55 "DM Sans", Arial, sans-serif;
+  text-align: start;
+}
+.roadmap-export-document h1 { margin: 20px 0 4px; color: #123d55; font-size: 25pt; line-height: 1.2; }
+.roadmap-export-document h2 { margin: 0 0 12px; color: #135d7b; font-size: 15pt; }
+.export-brand { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1681a4; padding-bottom: 12px; }
+.export-wordmark { display: flex; align-items: center; gap: 8px; color: #104b67; font-size: 17pt; font-weight: 800; }
+.export-mark { display: inline-grid; width: 30px; height: 30px; place-items: center; border-radius: 8px; color: #fff; background: #1681a4; }
+.export-date, .export-subtitle { color: #526878; font-size: 9.5pt; }
+.export-summary, .export-section { margin-top: 22px; break-inside: avoid; }
+.export-summary { padding: 16px; border: 1px solid #d8e4ea; border-radius: 10px; background: #f4f9fb; }
+.export-summary dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin: 0; }
+.export-summary dl div { min-width: 0; }
+.export-summary dt { color: #5a6d7a; font-size: 8.5pt; font-weight: 700; }
+.export-summary dd { margin: 2px 0 0; font-weight: 700; overflow-wrap: anywhere; }
+.export-steps, .export-recommendations { margin: 0; padding-inline-start: 24px; }
+.export-step, .export-recommendations li { padding: 10px 12px; border: 1px solid #e0e8ed; border-radius: 8px; margin-bottom: 8px; break-inside: avoid; }
+.export-step-heading { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.export-step p, .export-recommendations p { margin: 5px 0 0; overflow-wrap: anywhere; }
+.export-status { white-space: nowrap; border-radius: 99px; padding: 2px 8px; font-size: 8pt; font-weight: 700; }
+.export-status.done { color: #126342; background: #e5f5ed; }
+.export-status.progress { color: #845400; background: #fff2d8; }
+.export-status.todo { color: #694e62; background: #f2eaf0; }
+.export-advice { color: #526878; font-size: 9.5pt; }
+.export-footer { margin-top: 28px; padding-top: 10px; border-top: 1px solid #d8e4ea; color: #607583; font-size: 8pt; }
+
+@page { size: A4; margin: 16mm; }
+@media print {
+  html, body, #root { width: 100% !important; min-height: 0 !important; background: #fff !important; }
+  body * { visibility: hidden !important; }
+  #roadmap-export, #roadmap-export * { visibility: visible !important; }
+  #roadmap-export {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #172b3b !important;
+    background: #fff !important;
+    font-size: 10pt !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #roadmap-export h1 { font-size: 22pt !important; }
+  #roadmap-export h2 { font-size: 14pt !important; }
+  .export-summary, .export-section { break-inside: auto !important; }
+  .export-step, .export-recommendations li, .export-summary dl div { break-inside: avoid !important; page-break-inside: avoid !important; }
+  .export-brand { break-inside: avoid; }
+  a { color: inherit !important; text-decoration: none !important; }
 }
