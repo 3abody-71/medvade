@@ -27,6 +27,7 @@ import {
   type RoadmapQuestion,
 } from "../data/roadmapReadiness";
 import CareerDashboard from "./CareerDashboard";
+import { assetPath } from "../lib/assetPath";
 
 const FLAG_IMAGES: Record<string, string> = {
   usa: "/assets/flags/roadmap/usa.png",
@@ -66,9 +67,14 @@ function CountryCard({
       <div className="flex items-center justify-between">
         <span className="block h-7 w-10 overflow-hidden rounded-md border border-border bg-secondary shadow-sm">
           <img
-            src={FLAG_IMAGES[country.id]}
+            src={assetPath(FLAG_IMAGES[country.id])}
             alt={`${country.name} national flag`}
             className="h-full w-full object-cover"
+            onError={event => {
+              event.currentTarget.style.display = "none";
+              event.currentTarget.parentElement?.setAttribute("aria-label", `${country.name} flag`);
+              event.currentTarget.parentElement?.insertAdjacentText("afterbegin", country.flag);
+            }}
           />
         </span>
         {selected && <CheckCircle2 size={19} className="text-primary" />}
