@@ -5,7 +5,6 @@ import {
   Calendar,
   Banknote,
   Compass,
-  Globe,
   Route,
   Users,
 } from "lucide-react";
@@ -98,19 +97,6 @@ function CountryCard({
             label={uiText(isArabic, "Resident salary", "راتب الطبيب المقيم")}
             value={country.salaryRange}
           />
-        </div>
-        <div className="country-card-citizenship mt-3 flex gap-2 rounded-lg bg-secondary/60 p-2.5 text-[11px] leading-4">
-          <Globe size={15} className="mt-0.5 shrink-0 text-primary" />
-          <span>
-            <span className="font-bold">
-              {uiText(
-                isArabic,
-                "Citizenship timeline (general):",
-                "الجدول العام للحصول على الجنسية:"
-              )}
-            </span>{" "}
-            {country.citizenshipTimeline}
-          </span>
         </div>
       </Link>
       <div className="mt-auto border-t border-border px-4 pb-4 pt-3">
