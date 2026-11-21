@@ -12,12 +12,14 @@ export default function CareerRoadmap() {
       <div className="career-roadmap-intro flex flex-col gap-4 rounded-xl border border-primary/15 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
         <div className="career-roadmap-intro-number" aria-hidden="true">01</div>
         <div className="min-w-0 flex-1">
-          <div className="eyebrow">
-            {isArabic ? "الخطوة الأولى" : "First step"}
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-lg font-extrabold tracking-tight sm:text-xl">
+              {isArabic ? "خريطة مسارك المهني الشخصية" : "Personal Career Roadmap"}
+            </p>
+            <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-primary">
+              {isArabic ? "الخطوة الأولى" : "First step"}
+            </span>
           </div>
-          <p className="mt-2 text-lg font-extrabold tracking-tight sm:text-xl">
-            {isArabic ? "خريطة مسارك المهني الشخصية هي خطوتك الأولى" : "Personal Career Roadmap is your first step"}
-          </p>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {isArabic
               ? "ابدأ هنا لاختيار وجهتك وتخصصك ودورتك."
