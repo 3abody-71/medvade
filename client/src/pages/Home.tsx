@@ -185,6 +185,48 @@ export default function Home() {
         </div>
       </section>
 
+      <section
+        className="career-roadmap-intro rounded-2xl border border-primary/15 p-5 shadow-sm sm:flex sm:items-center sm:gap-5 sm:p-6"
+        aria-labelledby="career-roadmap-intro-heading"
+      >
+        <div className="career-roadmap-intro-number" aria-hidden="true">
+          01
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="eyebrow">
+            {uiText(
+              isArabic,
+              "First step · Start here",
+              "الخطوة الأولى · ابدأ من هنا"
+            )}
+          </div>
+          <h2
+            id="career-roadmap-intro-heading"
+            className="mt-2 text-xl font-extrabold tracking-tight sm:text-2xl"
+          >
+            {uiText(
+              isArabic,
+              "Start with your Personal Career Roadmap",
+              "ابدأ بخريطة مسارك المهني الشخصية"
+            )}
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+            {uiText(
+              isArabic,
+              "This is the first step to use medvade. Choose your destination, specialty, and cycle to understand the requirements and see what to prepare next.",
+              "هذه هي الخطوة الأولى لاستخدام medvade. اختر وجهتك وتخصصك ودورتك لتفهم المتطلبات وتعرف ما الذي تستعد له بعد ذلك."
+            )}
+          </p>
+        </div>
+        <Link
+          to="/roadmap"
+          className="btn-primary mt-4 inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs font-extrabold sm:mt-0"
+        >
+          {uiText(isArabic, "Start here", "ابدأ من هنا")}{" "}
+          <ArrowRight size={15} />
+        </Link>
+      </section>
+
       <CareerRoadmap />
 
       {/* Quick links */}

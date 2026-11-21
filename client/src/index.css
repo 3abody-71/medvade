@@ -416,6 +416,29 @@ a {
     hsl(var(--secondary) / 0.28)
   );
 }
+.career-roadmap-intro {
+  background: linear-gradient(
+    110deg,
+    hsl(var(--secondary) / 0.72),
+    hsl(var(--card)) 72%
+  );
+}
+.career-roadmap-intro-number {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid hsl(var(--primary) / 0.2);
+  border-radius: 1rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-family: var(--app-font-mono);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  box-shadow: 0 8px 18px hsl(var(--primary) / 0.18);
+}
 .career-roadmap-path {
   display: flex;
   align-items: flex-start;
@@ -980,6 +1003,12 @@ a {
 }
 
 @media (max-width: 767px) {
+  .career-roadmap-intro-number {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.85rem;
+  }
+
   .home-hero {
     min-height: 0;
     padding: 1.25rem;
