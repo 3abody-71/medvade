@@ -29,7 +29,6 @@ export default function CareerRoadmap() {
       </div>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="max-w-2xl">
-          <div className="eyebrow">Personal Career Roadmap</div>
           <h2 id="roadmap-heading" className="mt-2 text-2xl font-extrabold tracking-tight">
             {isArabic ? "اختر الدولة وأجب عن متطلبات الإقامة خطوة بخطوة" : "Choose a country and answer its residency requirements step by step."}
           </h2>
