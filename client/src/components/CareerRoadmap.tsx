@@ -2,6 +2,7 @@ import { ArrowRight, MapPinned, ShieldCheck, Stethoscope } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { ROADMAP_COUNTRIES } from "../data/roadmapReadiness";
+import { assetPath } from "../lib/assetPath";
 
 export default function CareerRoadmap() {
   const { isArabic, profile } = useApp();
@@ -9,6 +10,33 @@ export default function CareerRoadmap() {
   const latestCountry = latestSaved ? ROADMAP_COUNTRIES.find(country => country.id === latestSaved[0]) : undefined;
   return (
     <section className="career-roadmap-shell rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-7" aria-labelledby="roadmap-heading">
+      <div className="career-roadmap-intro flex flex-col gap-4 rounded-xl border border-primary/15 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+        <div className="career-roadmap-intro-number" aria-hidden="true">01</div>
+        <div className="min-w-0 flex-1">
+          <div className="eyebrow">
+            {isArabic ? "الخطوة الأولى · ابدأ من هنا" : "First step · Start here"}
+          </div>
+          <p className="mt-2 text-lg font-extrabold tracking-tight sm:text-xl">
+            {isArabic ? "ابدأ بخريطة مسارك المهني الشخصية" : "Start with your Personal Career Roadmap"}
+          </p>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+            {isArabic
+              ? "هذه هي الخطوة الأولى لاستخدام medvade. اختر وجهتك وتخصصك ودورتك لتفهم المتطلبات وتعرف ما الذي تستعد له بعد ذلك."
+              : "This is the first step to use medvade. Choose your destination, specialty, and cycle to understand the requirements and see what to prepare next."}
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-3 rounded-xl border border-border bg-card/75 px-3 py-2.5" aria-label={isArabic ? "مسار الولايات المتحدة" : "United States pathway example"}>
+          <img
+            src={assetPath("/assets/flags/roadmap/usa.png")}
+            alt={isArabic ? "علم الولايات المتحدة" : "United States flag"}
+            className="h-9 w-14 rounded-md border border-border object-cover shadow-sm"
+          />
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{isArabic ? "مثال وجهة" : "Example destination"}</p>
+            <p className="mt-0.5 text-xs font-extrabold">{isArabic ? "الولايات المتحدة" : "United States"}</p>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="max-w-2xl">
           <div className="eyebrow">Personal Career Roadmap</div>
